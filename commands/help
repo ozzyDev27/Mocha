@@ -1,0 +1,19 @@
+0: Commands (returns this list of commands)
+1: Check branch (shows your current location and parent nodes)
+2: Check children (shows child nodes of current branch) 
+3: Move (moves either up, down, or teleports to a node ID)
+4: Properties (allows you to look at the properties of your current location, e.g. shows the file type)
+5: Edit (allows you to edit properties, such as the name)
+6: Open (allows you to open the location you are in, e.g. if you are at a txt file, it will open it)
+7: Create (creates a new child branch of current node)
+8: Delete (allows you to delete your current location)
+9: Relocate (allows you to turn your current location into the child of another node)
+A: Define (allows you to custom-define a command)
+B: User Defined
+C: User Defined
+D: User Defined
+E: User Defined
+F: User Defined
+
+Commands / Help List
+Brings up a list of all commands, or if you have a parameter at character 2, explains that command
