@@ -4,27 +4,27 @@ import os
 
 
 # ----------------------------------- Setup ---------------------------------- #
-currentBranch=[]
 files={} #nodeID:(filetype,otherpropertieshere,data)
 
 def error(msg): #? def a useful function trust me
     print(msg)
-
-class Trees:
+class Branch:
     def __init__(self, nodeID):
         self.nodeID = nodeID #pointer to file object
         self.children = []
 
     def addChild(self, childNode):
-        #creates edge
         self.children.append(childNode)
     
     def removeChild(self,childNode):
-        #destroyes edge
         self.children = [child for child in self.children if child is not childNode]
 
     def traverse(self, nodeID):
         pass #TODO!
+
+    def destroy(self):
+        del self
+
 # ----------------------------------- Loop ----------------------------------- #
 while True:
     cmd=input("> ")

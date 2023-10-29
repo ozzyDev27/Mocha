@@ -6,7 +6,7 @@
 5: Edit (allows you to edit properties, such as the name)
 6: Open (allows you to open the location you are in, e.g. if you are at a txt file, it will open it)
 7: Create (creates a new child branch of current node)
-8: Delete (allows you to delete your current location)
+8: Delete (allows you to delete a child of your current location)
 9: Relocate (allows you to turn your current location into the child of another node)
 A: Define (allows you to custom-define a command)
 B: User Defined
