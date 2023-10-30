@@ -10,10 +10,10 @@ location=0 #would be a node ID - 0 is the root node's ID
 def error(msg): #? def a useful function trust me
     print(msg)
 class Branch:
-    def __init__(self, nodeID):
+    def __init__(self, nodeID, parentID):
         self.nodeID = nodeID #pointer to file object
         self.children = []
-        self.parent = 0 #parent node's ID, 0 is the root node's ID
+        self.parent = parentID #parent node's ID, 0 is the root node's ID
 
     def addChild(self, childNode):
         self.children.append(childNode)
