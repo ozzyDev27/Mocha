@@ -8,8 +8,8 @@
 7: Create (creates a new child branch of current node)
 8: Delete (allows you to delete a child of your current location)
 9: Relocate (allows you to turn your current location into the child of another node)
-A: Define (allows you to custom-define a command)
-B: User Defined
+A: Repeat (allows you to repeat a command any amount of times)
+B: Define (allows you to custom-define a command)
 C: User Defined
 D: User Defined
 E: User Defined

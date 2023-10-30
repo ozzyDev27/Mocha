@@ -5,6 +5,7 @@ import os
 
 # ----------------------------------- Setup ---------------------------------- #
 files={} #nodeID:(filetype,otherpropertieshere,data)
+location=0 #would be a node ID - 0 is the root node's ID
 
 def error(msg): #? def a useful function trust me
     print(msg)
@@ -12,6 +13,7 @@ class Branch:
     def __init__(self, nodeID):
         self.nodeID = nodeID #pointer to file object
         self.children = []
+        self.parent = 0 #parent node's ID, 0 is the root node's ID
 
     def addChild(self, childNode):
         self.children.append(childNode)
@@ -19,8 +21,14 @@ class Branch:
     def removeChild(self,childNode):
         self.children = [child for child in self.children if child is not childNode]
 
-    def traverse(self, nodeID):
-        pass #TODO!
+    def traverseUp(self, nodeID):
+        global location
+        if self.parent:
+            location = self.parent
+        else: error("Traversal Error: No Parent Node!")
+
+    def traverseDown(self, nodeID, moveTo):
+        pass #traverses to one of the child nodes
 
     def destroy(self):
         del self
@@ -68,6 +76,5 @@ while True:
             case "f":
                 pass
             
-
     except:
         error("Command Error: Unknown Command! (Use \"0\" for help!)")
