@@ -6,14 +6,17 @@ import os
 # ----------------------------------- Setup ---------------------------------- #
 files={} #nodeID:(filetype,otherpropertieshere,data)
 location=0 #would be a node ID - 0 is the root node's ID
-
+IDs=[] #list of all node IDs
 def error(msg): #? def a useful function trust me
-    print(msg)
+    print(msg) #will probably eventually become useful in some way
+
 class Branch:
     def __init__(self, nodeID, parentID):
+        global IDs
         self.nodeID = nodeID #pointer to file object
+        IDs.append(nodeID)
         self.children = []
-        self.parent = parentID #parent node's ID, 0 is the root node's ID
+        self.parent = parentID
 
     def addChild(self, childNode):
         self.children.append(childNode)
@@ -23,14 +26,17 @@ class Branch:
 
     def traverseUp(self, nodeID):
         global location
-        if self.parent:
+        if type(self.parent)==int:
             location = self.parent
-        else: error("Traversal Error: No Parent Node!")
-
+        else: error(f"Traversal Error: No Parent Node {self.parent}!")
     def traverseDown(self, nodeID, moveTo):
-        pass #traverses to one of the child nodes
-
+        global location #traverses to one of the child nodes
+        if moveTo in range(0,len(self.children)):
+            location=
+        else: error(f"Index Error: No Child {moveTo}!")
     def destroy(self):
+        global IDs
+        IDs=[i for i in IDs if i!=self.nodeID]
         del self
 
 # ----------------------------------- Loop ----------------------------------- #
