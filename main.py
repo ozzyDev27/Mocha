@@ -5,6 +5,7 @@ import os
 # ----------------------------------- Setup ---------------------------------- #
 location=0 #would be a node ID - 0 is the root node's ID
 IDs=[] #list of all node IDs
+tree=[] #list of all instances
 
 def error(msg): #? def a useful function trust me
     print(msg) #will probably eventually become useful in some way
@@ -44,7 +45,7 @@ class Branch:
     def traverseDown(self, nodeID, moveTo):
         global location #traverses to one of the child nodes
         if moveTo in range(0,len(self.children)):
-            location=
+            location=moveTo
         else: error(f"Index Error: No Child {moveTo}!")
 
     def destroy(self):
