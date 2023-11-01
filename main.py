@@ -48,7 +48,7 @@ class Branch:
         if self.nodeID:
             global tree
             del tree[self.ID]
-            del self #! This line either works, works but is useless, does nothing, or breaks everything
+            del self #! This line either works, does nothing, or breaks everything.
 
 def newBranch(parentID):
     global tree

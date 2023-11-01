@@ -11,10 +11,9 @@
 A: Duplicate (duplicates the file at your location)
 B: 
 C: 
-D:
+D: 
 E: Repeat (allows you to repeat a command any amount of times)
 F: Exit (exits mocha)
-#Define (allows you to custom-define a command) {maybe}
 
 Commands / Help List
 Brings up a list of all commands, or if you have a parameter at character 2, explains that command
@@ -22,21 +21,22 @@ Example: `02` would return an in-depth explanation of the second command, or the
 
 Check Branch
 Shows your current branch, and all ancestors of that branch.
+It would also show you the IDs of each ancestor in brackets.
 Example: `1` could return   
-1: root
-2: files
-3: thisFile.txt
+1: root (0)
+2: files (3)
+3: thisFile.txt (15)
 
 Check Children
-Shows a list of all children of your current branch.
+Shows a list of all children and their IDs of your current branch.
 Example: `2` could return
-1: childOne.txt
-2: child
-3: test.py
+1: childOne.txt (16)
+2: child (17)
+3: test.py (18)
 
 Move / Teleport
 Allows you to move up or down the tree.
-The second char will either be `1` or `u` for up and `2` or `d` for down.
+The second char will either be `1` or `u` for up, and `2` or `d` for down.
 If you are moving down, you need to choose the child you move to. This can be done by adding the index of the child you want to move to at the end. You can find the index of a child using the "Check Children" command, or 2.
 Example: `3d2` would move you to the second child of the branch
 
