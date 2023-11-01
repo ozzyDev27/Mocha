@@ -4,35 +4,31 @@ import os
 
 # ----------------------------------- Setup ---------------------------------- #
 location=0 #would be a node ID - 0 is the root node's ID
-IDs=[] #list of all node IDs
-tree=[] #list of all instances
+tree={} #all instances with nodeIDs as keys
 
 def error(msg): #? def a useful function trust me
     print(msg) #will probably eventually become useful in some way
 
 class Branch:
-    def __init__(self, nodeID, parentID):
-        global IDs
-        self.nodeID = nodeID #how u can identify the class
-        IDs.append(nodeID)
+    def __init__(self, ID, parentID):
         self.properties = None #something here eventually
+        self.ID=ID
         self.data = None #would have the file data
         self.children = []
         self.parent = parentID
 
     def addChild(self, childNode):
-        global IDs
-        if childNode in IDs:
+        global tree
+        if childNode in tree.keys():
             self.children.append(childNode)
         else: error(f"ID Error: {childNode} is not a Valid ID!")
-            
     
     def removeChild(self,childNode):
         self.children = [child for child in self.children if child is not childNode]
     
     def changeParent(self,parentNode):
-        global IDs
-        if parentNode in IDs:
+        global tree
+        if parentNode in tree.keys():
             self.parent=parentNode
         else: error(f"ID Error: {parentNode} is not a Valid ID!")
             
@@ -50,8 +46,8 @@ class Branch:
 
     def destroy(self):
         if self.nodeID:
-            global IDs
-            IDs=[i for i in IDs if i!=self.nodeID]
+            global tree
+            del tree[self.ID]
             del self
 
 # ----------------------------------- Loop ----------------------------------- #
