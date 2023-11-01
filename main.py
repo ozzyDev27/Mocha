@@ -39,7 +39,7 @@ class Branch:
         else: error(f"Traversal Error: No Parent Node {self.parent}!")
 
     def traverseDown(self, nodeID, moveTo):
-        global location #traverses to one of the child nodes
+        global location
         if moveTo in range(0,len(self.children)):
             location=moveTo
         else: error(f"Index Error: No Child {moveTo}!")
@@ -48,7 +48,13 @@ class Branch:
         if self.nodeID:
             global tree
             del tree[self.ID]
-            del self
+            del self #! This line either works, works but is useless, does nothing, or breaks everything
+
+def newBranch(parentID):
+    global tree
+    keys = sorted(tree.keys())
+    newID = next((i for i,j in enumerate(keys,start=min(keys)) if i!= j), max(keys)+1)
+    tree[newID]=Branch(newID,parentID)
 
 # ----------------------------------- Loop ----------------------------------- #
 while True:
