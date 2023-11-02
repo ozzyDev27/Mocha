@@ -12,6 +12,7 @@ def error(msg): #? def a useful function trust me
 class Branch:
     def __init__(self, ID, parentID):
         self.properties = None #something here eventually
+        self.name="MissingNo"
         self.ID=ID
         self.data = None #would have the file data
         self.children = []
@@ -55,6 +56,9 @@ def newBranch(parentID):
     keys = sorted(tree.keys())
     newID = next((i for i,j in enumerate(keys,start=min(keys)) if i!= j), max(keys)+1)
     tree[newID]=Branch(newID,parentID)
+
+tree[0]=Branch(0,None)
+tree[0].name="root"
 
 # ----------------------------------- Loop ----------------------------------- #
 while True:
