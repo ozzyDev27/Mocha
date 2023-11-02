@@ -15,7 +15,7 @@ class Branch:
         self.ID=ID
         self.data = None #would have the file data
         self.children = []
-        self.parent = parentID
+        self.parent = parentID if parentID+1 else None
 
     def addChild(self, childNode):
         global tree
@@ -31,7 +31,7 @@ class Branch:
         if parentNode in tree.keys():
             self.parent=parentNode
         else: error(f"ID Error: {parentNode} is not a Valid ID!")
-            
+        
     def traverseUp(self, nodeID):
         global location
         if type(self.parent)==int:
@@ -45,7 +45,7 @@ class Branch:
         else: error(f"Index Error: No Child {moveTo}!")
 
     def destroy(self):
-        if self.nodeID:
+        if self.nodeID not in [0]:
             global tree
             del tree[self.ID]
             del self #! This line either works, does nothing, or breaks everything.
@@ -69,7 +69,8 @@ while True:
                     if False: error("Parameter Error: Unknown Command!")
                 else: error("Parameter Error: Incorrect Parameters!")
             case "1":
-                pass
+                toOutput=""
+                
             case "2":
                 pass
             case "3":
