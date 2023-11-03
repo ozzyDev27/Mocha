@@ -6,14 +6,14 @@
 5: Edit (allows you to edit properties, such as the name or file type)
 6: Open (allows you to open the location you are in, e.g. if you are at a txt file, it will open it)
 7: Create (creates a new child branch of current node)
-8: Delete (allows you to delete a child of your current location)
+8: Delete (allows you to delete the node at your current location)
 9: Relocate (allows you to turn your current location into the child of another node)
 A: Duplicate (duplicates the file at your location)
 B: 
 C: 
 D: 
 E: Repeat (allows you to repeat a command any amount of times)
-F: Exit (exits mocha)
+F: Exit (exits Mocha)
 
 Commands / Help List
 Brings up a list of all commands, or if you have a parameter at character 2, explains that command
@@ -23,16 +23,16 @@ Check Branch
 Shows your current branch, and all ancestors of that branch.
 It would also show you the IDs of each ancestor in brackets.
 Example: `1` could return   
-1: root (0)
+```1: root (0)
 2: files (3)
-3: thisFile.txt (15)
+3: thisFile.txt (15)```
 
 Check Children
 Shows a list of all children and their IDs of your current branch.
 Example: `2` could return
-1: childOne.txt (16)
+```1: childOne.txt (16)
 2: child (17)
-3: test.py (18)
+3: test.py (18)```
 
 Move / Teleport
 Allows you to move up or down the tree.
@@ -43,5 +43,61 @@ Example: `3d2` would move you to the second child of the branch
 Properties
 Allows you to check the properties of the file at your current location.
 Example: `4` could give you
-Name: "thisFile"
+```Name: "thisFile"
 File Type: txt (Text File)
+Node ID: 27
+Memory Location: 0x6fff8acde30b0
+Size: 476598 bytes```
+
+Edit
+Allows you to edit the properties of a file.  
+The second character would be what you want to edit, with `n` being name and `t` being file type.
+Once you run this command, it will ask for a further input, which will be what you are changing the property to.
+Example: `5t` would bring up an input, where if you enter `txt`, the file type would change to a text file.
+
+Open
+Allows you to view the data of a file. In some cases, you can edit the data as well.
+If you open an image file, it will open a new window that is view-only,
+but if you open a text file or text-containing file (such as a python file),
+it will open a window where you can also edit.
+Example: `6` would open the file at your current location.
+
+Create
+Allows you to create a child of the node at your location.
+On creation, the file type will be null, it will contain no data, and have a placeholder name.
+Example: `7` would create a blank file that is a child of the node at your location.
+
+Delete
+Allows you to delete the node at your current location, and then moves you to the parent node.
+It gives a confirmation, where if you just press enter and don't type anything else, it will delete the file.
+Example: `8` would give the confirmation and delete the file, then move you to the parent node.
+
+Relocate
+Allows you to change the parent of the node at your location.
+There is only one parameter, which is the ID of the node you are changing to.
+Example: `927` would change the parent of the current file from `[previous parent]` to node ID `27`.
+
+Duplicate
+Allows you to make an exact copy of the node at your location. (Doesn't include node ID.)
+The second character defines if you want to copy the children, with 1 being yes and 0 being no.
+If you select yes, it would also make exact copies of the children, excluding node ID.
+Example: `A0` would create an exact replica of the file at your location, ignoring node ID.
+Example: `a1` would create an exact replica of the file at your location and its descendants, ignoring node ID.
+
+Repeat
+Allows you to repeat a specific command `n` times.
+Once you run the command, there will be an input field for the command you want to repeat.
+Example: `E12` would bring up an input field, and if I input `7`, it would create 12 children of the node at your location.
+
+Exit
+Bit obvious what this command does.
+While you're at it, hold down alt+F4.
+And then go outside.
+Breathe in the air.
+Realise you have wasted your life.
+You have spent so much of your time learning what little 1s and 0s do.
+The constant flashing of lights in a specific pattern, at a specific time, at a specific brightness, on a screen.
+The constant errors and failures.
+And yet.
+
+Then open Mocha again because you're bored.
