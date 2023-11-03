@@ -12,11 +12,11 @@ def error(msg): #? def a useful function trust me
 class Branch:
     def __init__(self, ID, parentID):
         self.properties = None #something here eventually
-        self.name="MissingNo"
+        self.name="MissingNo."
         self.ID=ID
         self.data = None #would have the file data
         self.children = []
-        self.parent = parentID if parentID+1 else None
+        self.parent = parentID
 
     def addChild(self, childNode):
         global tree
@@ -59,49 +59,56 @@ def newBranch(parentID):
 
 tree[0]=Branch(0,None)
 tree[0].name="root"
-
+newBranch(0)
+newBranch(1)
+newBranch(2)
+location=3
 # ----------------------------------- Loop ----------------------------------- #
 while True:
     cmd=input("> ")
-    try:
-        match cmd[0].lower():
-            case _: #? Commands / Help Menu
-                if len(cmd)==1:
-                    print(''.join(open("commands/help","r").readlines()[:16]))
-                elif len(cmd)==2:
-                    pass #go in depth abt command that was asked abt
-                    if False: error("Parameter Error: Unknown Command!")
-                else: error("Parameter Error: Incorrect Parameters!")
-            case "1":
-                toOutput=""
-                
-            case "2":
-                pass
-            case "3":
-                pass
-            case "4":
-                pass
-            case "5":
-                pass
-            case "6": 
-                pass
-            case "7":
-                pass
-            case "8":
-                pass
-            case "9":
-                pass
-            case "a":
-                pass
-            case "b":
-                pass
-            case "c":
-                pass
-            case "d":
-                pass
-            case "e":
-                pass
-            case "f":
-                pass
-    except:
-        error("Command Error: Unknown Command! (Use \"0\" for help!)")
+    match cmd[0].lower():
+        case "1":
+            ancestors=[]
+            level=1
+            ghostLocation=location
+            ancestors.append(f"{tree[ghostLocation].name} [{ghostLocation}]")
+            while tree[ghostLocation].parent:
+                ancestors.append(f"{tree[tree[ghostLocation].parent].name} [{tree[ghostLocation].parent}]")
+                ghostLocation=tree[ghostLocation].parent
+            ancestors.append("root [0]")
+            print('\n'.join([f"{node+1}: {ancestors[len(ancestors)-1-node]}" for node in range(0,len(ancestors))]))
+        case "2":
+            pass
+        case "3":
+            pass
+        case "4":
+            pass
+        case "5":
+            pass
+        case "6": 
+            pass
+        case "7":
+            pass
+        case "8":
+            pass
+        case "9":
+            pass
+        case "a":
+            pass
+        case "b":
+            pass
+        case "c":
+            pass
+        case "d":
+            pass
+        case "e":
+            pass
+        case "f":
+            pass
+        case _: #? Commands / Help Menu
+            if len(cmd)==1:
+                print(''.join(open("commands/help","r").readlines()[:16]))
+            elif len(cmd)==2:
+                pass #go in depth abt command that was asked abt
+                if False: error("Parameter Error: Unknown Command!")
+            else: error("Parameter Error: Incorrect Parameters!")
