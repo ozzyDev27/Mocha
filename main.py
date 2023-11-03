@@ -106,9 +106,8 @@ while True:
         case "f":
             pass
         case _: #? Commands / Help Menu
-            if len(cmd)==1:
-                print(''.join(open("commands/help","r").readlines()[:16]))
-            elif len(cmd)==2:
+            if len(cmd)>1 and cmd.startswith("0"):
                 pass #go in depth abt command that was asked abt
                 if False: error("Parameter Error: Unknown Command!")
-            else: error("Parameter Error: Incorrect Parameters!")
+            else:
+                print(''.join(open("commands/help","r").readlines()[:16]))
