@@ -46,7 +46,7 @@ class Branch:
         else: error(f"Index Error: No Child {moveTo}!")
 
     def destroy(self):
-        if self.nodeID not in [0]:
+        if self.ID not in [0] or True:
             global tree
             del tree[self.ID]
             del self #! This line either works, does nothing, or breaks everything.
@@ -66,49 +66,51 @@ location=3
 # ----------------------------------- Loop ----------------------------------- #
 while True:
     cmd=input("> ")
-    match cmd[0].lower():
-        case "1":
-            ancestors=[]
-            level=1
-            ghostLocation=location
-            ancestors.append(f"{tree[ghostLocation].name} [{ghostLocation}]")
-            while tree[ghostLocation].parent:
-                ancestors.append(f"{tree[tree[ghostLocation].parent].name} [{tree[ghostLocation].parent}]")
-                ghostLocation=tree[ghostLocation].parent
-            ancestors.append("root [0]")
-            print('\n'.join([f"{node+1}: {ancestors[len(ancestors)-1-node]}" for node in range(0,len(ancestors))]))
-        case "2":
-            pass
-        case "3":
-            pass
-        case "4":
-            pass
-        case "5":
-            pass
-        case "6": 
-            pass
-        case "7":
-            pass
-        case "8":
-            pass
-        case "9":
-            pass
-        case "a":
-            pass
-        case "b":
-            pass
-        case "c":
-            pass
-        case "d":
-            pass
-        case "e":
-            pass
-        case "f":
-            pass
-        case _: #? Commands / Help Menu
-            if len(cmd)==1:
-                print(''.join(open("commands/help","r").readlines()[:16]))
-            elif len(cmd)==2:
-                pass #go in depth abt command that was asked abt
-                if False: error("Parameter Error: Unknown Command!")
-            else: error("Parameter Error: Incorrect Parameters!")
+    if len(cmd):
+        match cmd[0].lower():
+            case "1":
+                ancestors=[]
+                level=1
+                ghostLocation=location
+                ancestors.append(f"{tree[ghostLocation].name} [{ghostLocation}]")
+                while tree[ghostLocation].parent:
+                    ancestors.append(f"{tree[tree[ghostLocation].parent].name} [{tree[ghostLocation].parent}]")
+                    ghostLocation=tree[ghostLocation].parent
+                ancestors.append("root [0]")
+                print('\n'.join([f"{node+1}: {ancestors[len(ancestors)-1-node]}" for node in range(0,len(ancestors))]))
+            case "2": #!TODO?
+                print('\n'.join([f"{i}: {tree[location].children[i]}" for i in range(0,len(tree[location].children))]))
+            case "3":
+                if len(cmd)!=2:
+                    error("Parameter Error:")
+            case "4":
+                pass
+            case "5":
+                pass
+            case "6": 
+                pass
+            case "7":
+                pass
+            case "8":
+                pass
+            case "9":
+                pass
+            case "a":
+                pass
+            case "b":
+                pass
+            case "c":
+                pass
+            case "d":
+                pass
+            case "e":
+                pass
+            case "f":
+                pass
+            case _: #? Commands / Help Menu
+                if len(cmd)==1:
+                    print(''.join(open("commands/help","r").readlines()[:16]))
+                elif len(cmd)==2:
+                    pass #go in depth abt command that was asked abt
+                    if False: error("Parameter Error: Unknown Command!")
+                else: error("Parameter Error: Incorrect Parameters!")
