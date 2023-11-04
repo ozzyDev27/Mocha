@@ -12,8 +12,8 @@ def error(msg): #? def a useful function trust me
 class Branch:
     def __init__(self, ID, parentID):
         self.properties = None #something here eventually
-        self.name="MissingNo."
-        self.ID=ID
+        self.name = "MissingNo."
+        self.ID = ID
         self.data = None #would have the file data
         self.children = []
         self.parent = parentID
@@ -59,10 +59,13 @@ def newBranch(parentID):
 
 tree[0]=Branch(0,None)
 tree[0].name="root"
+
+# * test setups
 newBranch(0)
 newBranch(1)
 newBranch(2)
 location=3
+
 # ----------------------------------- Loop ----------------------------------- #
 while True:
     cmd=input("> ")
