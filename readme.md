@@ -1,6 +1,5 @@
 # Mocha
-is a tree-based operating system I created!  
-You can traverse this tree and run files at your location.  
+is a small, simple, tree-based operating system!  
 Eventually it will have support for many more things, but right now it's just this.  
 ## Using a Command
 Mocha is based on a tree, and each file has a parent and may have children.  
