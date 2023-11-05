@@ -1,2 +1,1 @@
-print([i**2 for int(i) in str(199)])
-int(1)
+print(int("1234"[1:]))
