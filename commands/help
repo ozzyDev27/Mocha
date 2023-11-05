@@ -9,9 +9,9 @@
 8: Delete (allows you to delete the node at your current location)
 9: Relocate (allows you to turn your current location into the child of another node)
 A: Duplicate (duplicates the file at your location)
-B: 
-C: 
-D: 
+B: TBD
+C: TBD
+D: Safety Check (makes sure there are no errors that could happen)
 E: Repeat (allows you to repeat a command any amount of times)
 F: Exit (exits Mocha)
 
@@ -44,10 +44,9 @@ Properties
 Allows you to check the properties of the file at your current location.
 Example: `4` could give you
 ```Name: "thisFile"
-File Type: txt (Text File)
 Node ID: 27
-Memory Location: 0x6fff8acde30b0
-Size: 476598 bytes```
+File Type: txt (Text File)
+Memory Location: 1947052342336```
 
 Edit
 Allows you to edit the properties of a file.  
@@ -69,7 +68,7 @@ Example: `7` would create a blank file that is a child of the node at your locat
 
 Delete
 Allows you to delete the node at your current location, and then moves you to the parent node.
-It gives a confirmation, where if you just press enter and don't type anything else, it will delete the file.
+It gives a confirmation, where if you type the 3 characters shown, it will delete the file.
 Example: `8` would give the confirmation and delete the file, then move you to the parent node.
 
 Relocate
@@ -84,6 +83,9 @@ If you select yes, it would also make exact copies of the children, excluding no
 Example: `A0` would create an exact replica of the file at your location, ignoring node ID.
 Example: `a1` would create an exact replica of the file at your location and its descendants, ignoring node ID.
 
+Safety Check
+Allows you to perform a safety check, and if there is a problem, automatically fixes it.
+Example: If your location doesn't exist and you run the command, it will set your location to 0, or root.
 Repeat
 Allows you to repeat a specific command `n` times.
 Once you run the command, there will be an input field for the command you want to repeat.
