@@ -11,7 +11,7 @@
 A: Duplicate (duplicates the file at your location)
 B: TBD
 C: TBD
-D: Safety Check (makes sure there are no errors that could happen)
+D: Save (saves data, makes sure there are no errors that could happen)
 E: Repeat (allows you to repeat a command any amount of times)
 F: Exit (exits Mocha)
 
@@ -83,8 +83,9 @@ If you select yes, it would also make exact copies of the children, excluding no
 Example: `A0` would create an exact replica of the file at your location, ignoring node ID.
 Example: `a1` would create an exact replica of the file at your location and its descendants, ignoring node ID.
 
-Safety Check
-Allows you to perform a safety check, and if there is a problem, automatically fixes it.
+Save
+Allows you to save the tree, so you can close and run Mocha without losing data. Also
+allows you to perform a safety check, and if there is a problem, automatically fixes it.
 Example: If your location doesn't exist and you run the command, it will set your location to 0, or root.
 
 Repeat
