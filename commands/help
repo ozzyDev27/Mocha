@@ -93,19 +93,19 @@ Allows you to change the parent of the node at your location.
 There is only one parameter, which is the ID of the node you are changing to.
 Example: `927` would change the parent of the current file from `[previous parent]` to node ID `27`.
 
-Duplicate
+Duplicate (UNFINISHED)
 Allows you to make an exact copy of the node at your location. (Doesn't include node ID.)
 The second character defines if you want to copy the children, with 1 being yes and 0 being no.
 If you select yes, it would also make exact copies of the children, excluding node ID.
 Example: `A0` would create an exact replica of the file at your location, ignoring node ID.
 Example: `a1` would create an exact replica of the file at your location and its descendants, ignoring node ID.
 
-Save
+Save (UNFINISHED)
 Allows you to save the tree, so you can close and run Mocha without losing data. Also
 allows you to perform a safety check, and if there is a problem, automatically fixes it.
 Example: If your location doesn't exist and you run the command, it will set your location to 0, or root.
 
-Repeat
+Repeat (UNFINISHED)
 Allows you to repeat a specific command `n` times.
 Once you run the command, there will be an input field for the command you want to repeat.
 Example: `E12` would bring up an input field, and if I input `7`, it would create 12 children of the node at your location.
