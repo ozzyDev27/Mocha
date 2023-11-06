@@ -161,8 +161,10 @@ def runCommand(cmd):
             running=False
         case _: #? Commands / Help Menu
             if len(cmd)>1 and cmd.startswith("0"):
-                pass #go in depth abt command that was asked abt
-                if False: error("Parameter Error: Unknown Command!")
+                if int(cmd[2],16) in range(16):
+                    i,j=open("commands/help","r").readlines()[int(cmd[2],16)].strip.split(",")
+                    print(''.join(open("commands/help","r").readlines()[i:j]))
+                else: error("Parameter Error: Unknown Command!")
             else:
                 print(''.join(open("commands/help","r").readlines()[:16]))
 while running:
