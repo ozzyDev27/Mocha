@@ -1,3 +1,20 @@
+34,37
+38,45
+46,52
+53,58
+59,66
+67,72
+73,79
+80,84
+85,89
+90,94
+95,101
+
+
+102,106
+107,111
+111,124
+
 0: Commands (returns this list of commands)
 1: Check branch (shows your current location and parent nodes)
 2: Check children (shows child nodes of current branch) 
