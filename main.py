@@ -6,6 +6,7 @@ import string
 # ----------------------------------- Setup ---------------------------------- #
 location=0 #would be a node ID - 0 is the root node's ID
 tree={} #all instances with nodeIDs as keys
+running=True
 
 def error(msg): #? def a useful function trust me
     print(msg) #will probably eventually become useful in some way
@@ -74,9 +75,9 @@ newBranch(1) #3       2   3
 newBranch(2) #4      / \
 newBranch(2) #5     4   5
 
-# ----------------------------------- Loop ----------------------------------- #
-while True:
-    cmd=input("> ")
+# ------------------------------------ Loop ----------------------------------- #
+def runCommand(cmd):
+    global tree,location
     match cmd[0].lower():
         case "1":
             ancestors=[]
@@ -156,10 +157,13 @@ while True:
         case "e":
             pass
         case "f":
-            pass
+            global running
+            running=False
         case _: #? Commands / Help Menu
             if len(cmd)>1 and cmd.startswith("0"):
                 pass #go in depth abt command that was asked abt
                 if False: error("Parameter Error: Unknown Command!")
             else:
                 print(''.join(open("commands/help","r").readlines()[:16]))
+while running:
+    runCommand(input("> "))
