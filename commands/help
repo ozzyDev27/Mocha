@@ -10,7 +10,7 @@
 9: Relocate (allows you to turn your current location into the child of another node)
 A: Duplicate (duplicates the file at your location)
 B: TBD
-C: TBD
+C: Undo (allows you to undo the previous command)
 D: Save (saves data, makes sure there are no errors that could happen)
 E: Repeat (allows you to repeat a command any amount of times)
 F: Exit (exits Mocha)
