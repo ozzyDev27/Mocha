@@ -13,7 +13,6 @@ def error(msg): #? def a useful function trust me
 
 class Branch:
     def __init__(self, ID, parentID):
-        self.properties = None #something here eventually
         self.name = "MissingNo."
         self.ID = ID
         self.fileType= "000"
