@@ -86,6 +86,7 @@ Example: `a1` would create an exact replica of the file at your location and its
 Safety Check
 Allows you to perform a safety check, and if there is a problem, automatically fixes it.
 Example: If your location doesn't exist and you run the command, it will set your location to 0, or root.
+
 Repeat
 Allows you to repeat a specific command `n` times.
 Once you run the command, there will be an input field for the command you want to repeat.
