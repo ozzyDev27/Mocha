@@ -28,8 +28,8 @@
 A: Duplicate (duplicates the file at your location)
 B: TBD
 C: Undo (allows you to undo the previous command)
-D: Save (saves data, makes sure there are no errors that could happen)
-E: Repeat (allows you to repeat a command any amount of times)
+D: Repeat (allows you to repeat a command any amount of times)
+E: Save (saves data, makes sure there are no errors that could happen)
 F: Exit (exits Mocha)
 
 Commands / Help List
@@ -100,15 +100,15 @@ If you select yes, it would also make exact copies of the children, excluding no
 Example: `A0` would create an exact replica of the file at your location, ignoring node ID.
 Example: `a1` would create an exact replica of the file at your location and its descendants, ignoring node ID.
 
-Save (UNFINISHED)
-Allows you to save the tree, so you can close and run Mocha without losing data. Also
-allows you to perform a safety check, and if there is a problem, automatically fixes it.
-Example: If your location doesn't exist and you run the command, it will set your location to 0, or root.
-
 Repeat (UNFINISHED)
 Allows you to repeat a specific command `n` times.
 Once you run the command, there will be an input field for the command you want to repeat.
 Example: `E12` would bring up an input field, and if I input `7`, it would create 12 children of the node at your location.
+
+Save (UNFINISHED)
+Allows you to save the tree, so you can close and run Mocha without losing data. Also
+allows you to perform a safety check, and if there is a problem, automatically fixes it.
+Example: If your location doesn't exist and you run the command, it will set your location to 0, or root.
 
 Exit
 Bit obvious what this command does.
