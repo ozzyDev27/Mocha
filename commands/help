@@ -85,7 +85,7 @@ Example: `7` would create a blank file that is a child of the node at your locat
 
 Delete
 Allows you to delete the node at your current location, and then moves you to the parent node.
-It gives a confirmation, where if you type the 3 characters shown, it will delete the file.
+It also deletes every child and descendant of the node. It will give a confirmation, to make sure you don't accidentally delete it.
 Example: `8` would give the confirmation and delete the file, then move you to the parent node.
 
 Relocate
