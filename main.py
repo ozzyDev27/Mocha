@@ -141,7 +141,7 @@ def runCommand(cmd):
             pass
         case "7":
             newBranch(location)
-        case "8": #! destroy all children
+        case "8":
             chars=''.join(random.choice(string.ascii_letters) for i in range(3))
             if input(f"Type in the following text: [{chars.upper()}]\n> ").lower()==chars.lower():
                 descendants=[location]+tree[location].descendants()
