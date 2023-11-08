@@ -1,6 +1,7 @@
 import time
 import math
 import os
+from copy import deepcopy
 import random
 import string
 # ----------------------------------- Setup ---------------------------------- #
@@ -138,44 +139,50 @@ def runCommand(cmd):
             else:
                 error(f"Unknown Property {cmd[2]}!")
         case "6": 
-            pass
+            match tree[location].fileType:
+                case _:
+                    pass
         case "7":
             newBranch(location)
         case "8":
-            chars=''.join(random.choice(string.ascii_letters) for i in range(3))
-            if input(f"Type in the following text: [{chars.upper()}]\n> ").lower()==chars.lower():
-                descendants=[location]+tree[location].descendants()
-                ghostLocation=tree[location].parent
-                for node in descendants:
-                    tree[node].children=[i for i in tree[node].children if i not in descendants]
-                descendants=descendants[::-1]
-                tree[tree[location].parent].children.remove(location)
-                while descendants:
-                    location=descendants[0]
-                    tree[location].destroy()
-                    descendants.pop(0)
-                location=ghostLocation
-                print("Deletion Successful!")
+            if location:
+                chars=''.join(random.choice(string.ascii_letters) for i in range(3))
+                if input(f"Type in the following text: [{chars.upper()}]\n> ").lower()==chars.lower():
+                    descendants=[location]+tree[location].descendants()
+                    ghostLocation=tree[location].parent
+                    for node in descendants:
+                        tree[node].children=[i for i in tree[node].children if i not in descendants]
+                    descendants=descendants[::-1]
+                    tree[tree[location].parent].children.remove(location)
+                    while descendants:
+                        location=descendants[0]
+                        tree[location].destroy()
+                        descendants.pop(0)
+                    location=ghostLocation
+                    print("Deletion Successful!")
+                else:
+                    print("Deletion Cancelled!")
             else:
-                print("Deletion Cancelled!")
+                error("Access Error: Cannot Delete Root!")
         case "9":
             if int(cmd[1:]) in tree.keys():
                 tree[location].parent=int(cmd[1:])
-                print(f"Successfully Moved Swapped to Parent ID [{tree[location].parent}]")
+                print(f"Successfully Swapped to Parent ID [{tree[location].parent}]")
             else:
                 error(f"Parameter Error: Node ID [{int(cmd[1:])}] Doesn't Exist!")
-        case "a": #TODO
+        case "a": #!todo :(
             keys = sorted(tree.keys())
-            duplicateLocation = next((i for i,j in enumerate(keys,start=min(keys)) if i!= j), max(keys)+1)    
+            duplicateLocation = next((i for i,j in enumerate(keys,start=min(keys)) if i!=j), max(keys)+1)    
             newBranch(tree[location].parent)
             tree[duplicateLocation].name=tree[location].name
-            #tree[duplicateLocation].
         case "b":
             pass
         case "c":
             pass
         case "d":
-            pass
+            toRepeat=input(":> ")
+            for i in range(int(cmd[1:])):
+                runCommand(toRepeat)
         case "e":
             for i in tree.values(): #? checks for unknown parents
                 i.parent=0 if i.parent not in tree.keys() else i.parent
@@ -184,7 +191,7 @@ def runCommand(cmd):
         case "f":
             global running
             running=False
-        case "z": #? deubg cmd
+        case "z": #? debug cmd
             print(tree)
         case _: #? Commands / Help Menu
             if len(cmd)>1 and cmd.startswith("0"):
