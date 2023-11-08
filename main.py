@@ -49,6 +49,19 @@ class Branch:
 
     def checkChildren(self):
         return {i+1:self.children[i] for i in range(len(self.children))}
+    
+    def descendants(self):
+        global tree
+        descend=[]
+        i=True
+        while i:
+            x=[j for j in tree.keys() if tree[j].parent in descend]
+            if len(x)>1: 
+                descend.append(x)
+                i=True
+            else:i=False
+        print(descend)
+        return descend
 
     def destroy(self):
         if self.ID:
@@ -86,12 +99,14 @@ def runCommand(cmd):
             while tree[ghostLocation].parent:
                 ancestors.append(f"{tree[tree[ghostLocation].parent].name} [{tree[ghostLocation].parent}]")
                 ghostLocation=tree[ghostLocation].parent
-            ancestors.append("root [0]")
+            if len(ancestors)>1:ancestors.append("root [0]")
             print('\n'.join([f"{node+1}: {ancestors[len(ancestors)-1-node]}" for node in range(0,len(ancestors))]))
         case "2":
             print('\n'.join([f"{i}: {j}" for i,j in tree[location].checkChildren().items()]))
         case "3":
-            if cmd[1] in ["1","u"]:
+            if len(cmd)==1:
+                error("Parameter Error: No Parameters!")
+            elif cmd[1] in ["1","u"]:
                 if location:
                     location=tree[location].parent
                     print(f"Moved to [{location}] {tree[location].name}")
@@ -126,13 +141,19 @@ def runCommand(cmd):
             pass
         case "7":
             newBranch(location)
-        case "8": #TODO: destroy all children
+        case "8": #! destroy all children
             chars=''.join(random.choice(string.ascii_letters) for i in range(3))
             if input(f"Type in the following text: [{chars.upper()}]\n> ").lower()==chars.lower():
-                ghostLocation=location
-                location=tree[location].parent
-                tree[ghostLocation].destroy()
-                print(f"Successfully Deleted [{ghostLocation}]")
+                descendants=[location]+tree[location].descendants()
+                ghostLocation=tree[location].parent
+                for node in descendants:
+                    tree[node].children=[i for i in tree[node].children if i not in descendants]
+                while descendants:
+                    location=descendants[0]
+                    tree[location].destroy()
+                    descendants.pop(0)
+                location=ghostLocation
+                print("Deletion Succesful!")
             else:
                 print("Deletion Cancelled!")
         case "9":
@@ -154,10 +175,13 @@ def runCommand(cmd):
         case "d":
             pass
         case "e":
-            pass
+            for i in tree.values(): #? checks for unknown parents
+                i.parent=0 if i.parent not in tree.keys() else i.parent
         case "f":
             global running
             running=False
+        case "z":
+            print(tree)
         case _: #? Commands / Help Menu
             if len(cmd)>1 and cmd.startswith("0"):
                 if int(cmd[2],16) in range(16):
@@ -165,6 +189,6 @@ def runCommand(cmd):
                     print(''.join(open("commands/help","r").readlines()[i:j]))
                 else: error("Parameter Error: Unknown Command!")
             else:
-                print(''.join(open("commands/help","r").readlines()[:16]))
+                print(''.join(open("commands/help","r").readlines()[17:33]))
 while running:
     runCommand(input("> "))
