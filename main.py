@@ -52,15 +52,15 @@ class Branch:
     
     def descendants(self):
         global tree
-        descend=[]
+        descend=[self.ID]
         i=True
         while i:
             x=[j for j in tree.keys() if tree[j].parent in descend]
             if len(x)>1: 
-                descend.append(x)
+                descend=x
                 i=True
             else:i=False
-        print(descend)
+        #//print(descend)
         return descend
 
     def destroy(self):
@@ -99,7 +99,7 @@ def runCommand(cmd):
             while tree[ghostLocation].parent:
                 ancestors.append(f"{tree[tree[ghostLocation].parent].name} [{tree[ghostLocation].parent}]")
                 ghostLocation=tree[ghostLocation].parent
-            if len(ancestors)>1:ancestors.append("root [0]")
+            if tree[location]:ancestors.append("root [0]")
             print('\n'.join([f"{node+1}: {ancestors[len(ancestors)-1-node]}" for node in range(0,len(ancestors))]))
         case "2":
             print('\n'.join([f"{i}: {j}" for i,j in tree[location].checkChildren().items()]))
@@ -148,12 +148,14 @@ def runCommand(cmd):
                 ghostLocation=tree[location].parent
                 for node in descendants:
                     tree[node].children=[i for i in tree[node].children if i not in descendants]
+                descendants=descendants[::-1]
+                tree[tree[location].parent].children.remove(location)
                 while descendants:
                     location=descendants[0]
                     tree[location].destroy()
                     descendants.pop(0)
                 location=ghostLocation
-                print("Deletion Succesful!")
+                print("Deletion Successful!")
             else:
                 print("Deletion Cancelled!")
         case "9":
@@ -177,10 +179,12 @@ def runCommand(cmd):
         case "e":
             for i in tree.values(): #? checks for unknown parents
                 i.parent=0 if i.parent not in tree.keys() else i.parent
+            for i in tree.values():
+                i.children=[j for j in i.children if j in tree.keys()]
         case "f":
             global running
             running=False
-        case "z":
+        case "z": #? deubg cmd
             print(tree)
         case _: #? Commands / Help Menu
             if len(cmd)>1 and cmd.startswith("0"):
