@@ -130,10 +130,10 @@ def runCommand(cmd):
             fileType=f"{fileType[tree[location].fileType]} [{tree[location].fileType}]" if tree[location].fileType in fileType.keys() else tree[location].fileType 
             print(f"Name: {tree[location].name}\nNode ID: {tree[location].ID}\nFile Type: {fileType}\nMemory Location: {id(tree[location])}")
         case "5":
-            if cmd[2]=="n":
+            if cmd[2]=="n" and location:
                 tree[location].name=input("Enter File Name: ").removesuffix("\n")
                 print(f"Successfully Changed File Name to {tree[location].name}")
-            elif cmd[2]=="t":
+            elif cmd[2]=="t" and location:
                 tree[location].fileType=input("Enter File Type: ").removesuffix("\n")
                 print(f"Successfully Changed File Type to {tree[location].fileType}")
             else:
@@ -165,7 +165,7 @@ def runCommand(cmd):
             else:
                 error("Access Error: Cannot Delete Root!")
         case "9":
-            if int(cmd[1:]) in tree.keys():
+            if int(cmd[1:]) in tree.keys() and location:
                 tree[location].parent=int(cmd[1:])
                 print(f"Successfully Swapped to Parent ID [{tree[location].parent}]")
             else:
@@ -177,7 +177,7 @@ def runCommand(cmd):
             tree[duplicateLocation].name=tree[location].name
         case "b":
             pass
-        case "c":
+        case "c": #undo?
             pass
         case "d":
             toRepeat=input(":> ")
@@ -186,7 +186,7 @@ def runCommand(cmd):
         case "e":
             for i in tree.values(): #? checks for unknown parents
                 i.parent=0 if i.parent not in tree.keys() else i.parent
-            for i in tree.values():
+            for i in tree.values(): #? checks for unknown children
                 i.children=[j for j in i.children if j in tree.keys()]
         case "f":
             global running
