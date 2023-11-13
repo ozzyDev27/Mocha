@@ -4,6 +4,8 @@ import os
 from copy import deepcopy
 import random
 import string
+from tkinter import *
+from pathlib import Path
 # ----------------------------------- Setup ---------------------------------- #
 location=0 #would be a node ID - 0 is the root node's ID
 tree={} #all instances with nodeIDs as keys
@@ -70,6 +72,17 @@ class Branch:
             del tree[self.ID]
             del self #! This line either works, does nothing, or breaks everything.
 
+    def clone(self,newParent):
+        global tree
+        keys = sorted(tree.keys())
+        duplicateLocation = next((i for i,j in enumerate(keys,start=min(keys)) if i!=j), max(keys)+1)    
+        newBranch(newParent)
+        tree[duplicateLocation].name=self.name
+        tree[duplicateLocation].fileType=self.fileType
+        tree[duplicateLocation].data=self.data
+        if len(self.children):
+            for i in self.children:
+                tree[i].clone(duplicateLocation)
 def newBranch(parentID):
     global tree
     keys = sorted(tree.keys())
@@ -79,6 +92,17 @@ def newBranch(parentID):
 
 tree[0]=Branch(0,None)
 tree[0].name="root"
+
+def safetyCheck():
+    global tree
+    for i in tree.values(): #? checks for unknown parents
+        i.parent=0 if i.parent not in tree.keys() else i.parent
+    for i in tree.values(): #? checks for unknown children
+        i.children=[j for j in i.children if j in tree.keys()]
+
+def areYouSure():
+    chars=''.join(random.choice(string.ascii_letters) for i in range(3))
+    return input(f"Type in the following text: [{chars.upper()}]\n> ").lower()==chars.lower()
 
 #test setups            0
 location=2   #          |
@@ -103,7 +127,7 @@ def runCommand(cmd):
             if tree[location]:ancestors.append("root [0]")
             print('\n'.join([f"{node+1}: {ancestors[len(ancestors)-1-node]}" for node in range(0,len(ancestors))]))
         case "2":
-            print('\n'.join([f"{i}: {j}" for i,j in tree[location].checkChildren().items()]))
+            print('\n'.join([f"{i}: {tree[j].name} [{j}]" for i,j in tree[location].checkChildren().items()]))
         case "3":
             if len(cmd)==1:
                 error("Parameter Error: No Parameters!")
@@ -122,6 +146,13 @@ def runCommand(cmd):
                         error(f"Parameter Error: No Child {cmd[2]}")
                 except:
                     error(f"Parameter Error: Unkown Child {cmd[2]}")
+            elif cmd[1] in ["3","t"]:
+                try:
+                    if int(cmd[2:]) in tree.keys():
+                        location=int(cmd[2:])
+                        print(f"Successfuly Moved to {tree[location].name} [{location}]!")
+                except TypeError:
+                    error(f"Parameter Error: [{cmd[2:]}] is Not a Valid Node ID!")
             else:
                 error("Parameter Error: Unknown Traversal Direction!")
         case "4":
@@ -130,14 +161,14 @@ def runCommand(cmd):
             fileType=f"{fileType[tree[location].fileType]} [{tree[location].fileType}]" if tree[location].fileType in fileType.keys() else tree[location].fileType 
             print(f"Name: {tree[location].name}\nNode ID: {tree[location].ID}\nFile Type: {fileType}\nMemory Location: {id(tree[location])}")
         case "5":
-            if cmd[2]=="n" and location:
+            if cmd[1]=="n" and location:
                 tree[location].name=input("Enter File Name: ").removesuffix("\n")
                 print(f"Successfully Changed File Name to {tree[location].name}")
-            elif cmd[2]=="t" and location:
+            elif cmd[1]=="t" and location:
                 tree[location].fileType=input("Enter File Type: ").removesuffix("\n")
                 print(f"Successfully Changed File Type to {tree[location].fileType}")
             else:
-                error(f"Unknown Property {cmd[2]}!")
+                error(f"Unknown Property {cmd[1]}!")
         case "6": 
             match tree[location].fileType:
                 case _:
@@ -146,13 +177,9 @@ def runCommand(cmd):
             newBranch(location)
         case "8":
             if location:
-                chars=''.join(random.choice(string.ascii_letters) for i in range(3))
-                if input(f"Type in the following text: [{chars.upper()}]\n> ").lower()==chars.lower():
+                if areYouSure():
                     descendants=[location]+tree[location].descendants()
                     ghostLocation=tree[location].parent
-                    for node in descendants:
-                        tree[node].children=[i for i in tree[node].children if i not in descendants]
-                    descendants=descendants[::-1]
                     tree[tree[location].parent].children.remove(location)
                     while descendants:
                         location=descendants[0]
@@ -163,18 +190,19 @@ def runCommand(cmd):
                 else:
                     print("Deletion Cancelled!")
             else:
-                error("Access Error: Cannot Delete Root!")
+                error("Root Error: Cannot Delete Root!")
         case "9":
             if int(cmd[1:]) in tree.keys() and location:
                 tree[location].parent=int(cmd[1:])
                 print(f"Successfully Swapped to Parent ID [{tree[location].parent}]")
             else:
                 error(f"Parameter Error: Node ID [{int(cmd[1:])}] Doesn't Exist!")
-        case "a": #!todo :(
-            keys = sorted(tree.keys())
-            duplicateLocation = next((i for i,j in enumerate(keys,start=min(keys)) if i!=j), max(keys)+1)    
-            newBranch(tree[location].parent)
-            tree[duplicateLocation].name=tree[location].name
+        case "a":
+            if location:
+                tree[location].clone(tree[location].parent)
+                print(f"Successfuly Cloned {tree[location].name} [{location}]")
+            else:
+                error("Root Error: Cannot Duplicate Root!")
         case "b":
             pass
         case "c": #undo?
@@ -184,13 +212,12 @@ def runCommand(cmd):
             for i in range(int(cmd[1:])):
                 runCommand(toRepeat)
         case "e":
-            for i in tree.values(): #? checks for unknown parents
-                i.parent=0 if i.parent not in tree.keys() else i.parent
-            for i in tree.values(): #? checks for unknown children
-                i.children=[j for j in i.children if j in tree.keys()]
+            safetyCheck()
         case "f":
-            global running
-            running=False
+            print("Remember to Save!")
+            if areYouSure():
+                global running
+                running=False
         case "z": #? debug cmd
             print(tree)
         case _: #? Commands / Help Menu
