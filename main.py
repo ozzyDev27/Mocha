@@ -6,6 +6,7 @@ import random
 import string
 from tkinter import *
 from pathlib import Path
+import pickle
 # ----------------------------------- Setup ---------------------------------- #
 location=0 #would be a node ID - 0 is the root node's ID
 tree={} #all instances with nodeIDs as keys
@@ -19,7 +20,7 @@ class Branch:
         self.name = "MissingNo."
         self.ID = ID
         self.fileType= "000"
-        self.data = None #would have the file data
+        self.data = None
         self.children = []
         self.parent = parentID
 
@@ -213,9 +214,14 @@ def runCommand(cmd):
             for i in range(int(cmd[1:])):
                 runCommand(toRepeat)
         case "d":
-            pass
+            with open("savedData.pkl", 'rb') as file:
+                tree=pickle.load(file)
+            print("Successfully Loaded Saved Data!")
         case "e":
             safetyCheck()
+            with open("savedData.pkl", 'wb') as file: 
+                pickle.dump(tree, file)
+            print("Successfully Saved Data!")
         case "f":
             print("Remember to Save!")
             if areYouSure():
