@@ -63,14 +63,13 @@ class Branch:
                 descend=x
                 i=True
             else:i=False
-        #//print(descend)
         return descend
 
     def destroy(self):
         if self.ID:
             global tree
             del tree[self.ID]
-            del self #! This line either works, does nothing, or breaks everything.
+            del self
 
     def clone(self,newParent):
         global tree
@@ -127,7 +126,9 @@ def runCommand(cmd):
             if tree[location]:ancestors.append("root [0]")
             print('\n'.join([f"{node+1}: {ancestors[len(ancestors)-1-node]}" for node in range(0,len(ancestors))]))
         case "2":
-            print('\n'.join([f"{i}: {tree[j].name} [{j}]" for i,j in tree[location].checkChildren().items()]))
+            if len(tree[location].children):
+                print('\n'.join([f"{i}: {tree[j].name} [{j}]" for i,j in tree[location].checkChildren().items()]))
+            else: error("Children Error: No Children Found!")
         case "3":
             if len(cmd)==1:
                 error("Parameter Error: No Parameters!")
@@ -192,11 +193,13 @@ def runCommand(cmd):
             else:
                 error("Root Error: Cannot Delete Root!")
         case "9":
-            if int(cmd[1:]) in tree.keys() and location:
-                tree[location].parent=int(cmd[1:])
-                print(f"Successfully Swapped to Parent ID [{tree[location].parent}]")
-            else:
-                error(f"Parameter Error: Node ID [{int(cmd[1:])}] Doesn't Exist!")
+            try:
+                if int(cmd[1:]) in tree.keys() and location:
+                    tree[location].parent=int(cmd[1:])
+                    print(f"Successfully Swapped to Parent ID [{tree[location].parent}]")
+                else:
+                    error(f"Parameter Error: Node ID [{int(cmd[1:])}] Doesn't Exist!")
+            except ValueError: error("Parameter Error: [{cmd[1:]}] is not a Valid Node ID!")
         case "a":
             if location:
                 tree[location].clone(tree[location].parent)
@@ -205,12 +208,12 @@ def runCommand(cmd):
                 error("Root Error: Cannot Duplicate Root!")
         case "b":
             pass
-        case "c": #undo?
-            pass
-        case "d":
+        case "c":
             toRepeat=input(":> ")
             for i in range(int(cmd[1:])):
                 runCommand(toRepeat)
+        case "d":
+            pass
         case "e":
             safetyCheck()
         case "f":
