@@ -83,6 +83,7 @@ class Branch:
         if len(self.children):
             for i in self.children:
                 tree[i].clone(duplicateLocation)
+
 def newBranch(parentID):
     global tree
     keys = sorted(tree.keys())
@@ -111,6 +112,18 @@ newBranch(1) #2        / \
 newBranch(1) #3       2   3
 newBranch(2) #4      / \
 newBranch(2) #5     4   5
+tree[2].fileType="txt"
+
+# --------------------------------- Open File -------------------------------- #
+def openFile():
+    global tree, location
+    match tree[location].fileType:
+        case "000":
+            error("Open Error: Unable to Open Null File!")
+        case _:
+            from commands.open.open_txt import window
+            textWindow=window(tree[location])
+            textWindow.top()
 
 # ------------------------------------ Loop ----------------------------------- #
 def runCommand(cmd):
@@ -159,7 +172,7 @@ def runCommand(cmd):
                 error("Parameter Error: Unknown Traversal Direction!")
         case "4":
             fileType="-".join([i.removesuffix("\n") for i in open("commands/properties","r").readlines()]).split("-")
-            fileType={fileType[i]: fileType[i + 1] for i in range(0, len(fileType), 2)}
+            fileType={fileType[i-1]: fileType[i] for i in range(0, len(fileType), 2)}
             fileType=f"{fileType[tree[location].fileType]} [{tree[location].fileType}]" if tree[location].fileType in fileType.keys() else tree[location].fileType 
             print(f"Name: {tree[location].name}\nNode ID: {tree[location].ID}\nFile Type: {fileType}\nMemory Location: {id(tree[location])}")
         case "5":
@@ -172,9 +185,7 @@ def runCommand(cmd):
             else:
                 error(f"Unknown Property {cmd[1]}!")
         case "6": 
-            match tree[location].fileType:
-                case _:
-                    pass
+            openFile()
         case "7":
             newBranch(location)
         case "8":
