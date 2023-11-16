@@ -20,13 +20,13 @@
 2: Check children (shows child nodes of current branch) 
 3: Move (moves either up, down, or teleports to a node ID)
 4: Properties (allows you to look at the properties of your current location, e.g. shows the file type)
-5: Edit (allows you to edit properties, such as the name or file type)
+5: Edit (allows you to edit the properties of a file)
 6: Open (allows you to open the location you are in, e.g. if you are at a txt file, it will open it)
 7: Create (creates a new child branch of current node)
 8: Delete (allows you to delete the node at your current location)
 9: Relocate (allows you to turn your current location into the child of another node)
 A: Duplicate (duplicates the file at your location)
-B: TBD
+B: Clear (allows you to clear the terminal)
 C: Repeat (allows you to repeat a command any amount of times)
 D: Load (allows you to load saved data)
 E: Save (saves data, makes sure there are no errors that could happen)
@@ -105,13 +105,13 @@ Allows you to repeat a specific command `n` times.
 Once you run the command, there will be an input field for the command you want to repeat.
 Example: `E12` would bring up an input field, and if I input `7`, it would create 12 children of the node at your location.
 
-Load (UNFINISHED)
+Load
 Allows you to load a saved tree, so you can use Mocha throughout runs.
 This also effectively allows you to "quicksave", and undo accidental changes.
 Example: If you save using "E", then delete a file using "8", and then use the load command,
 the tree would go back to before the file was deleted. This works between python runs.
 
-Save (UNFINISHED)
+Save
 Allows you to save the tree, so you can close and run Mocha without losing data. 
 Also allows you to perform a safety check, and if there is a problem, automatically fixes it.
 Example: If your location doesn't exist and you run the command, it will set your location to 0, or root. It would then proceed to save the tree.
