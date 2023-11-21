@@ -231,6 +231,7 @@ def runCommand(cmd):
             case "d":
                 with open("save.pkl", 'rb') as file:
                     tree=pickle.load(file)
+                safetyCheck()
                 print("Successfully Loaded Saved Data!")
             case "e":
                 safetyCheck()
