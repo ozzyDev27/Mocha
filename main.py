@@ -179,10 +179,10 @@ def runCommand(cmd):
                 print(f"Name: {tree[location].name}\nNode ID: {tree[location].ID}\nFile Type: {fileType}\nMemory Location: {id(tree[location])}")
             case "5":
                 if cmd[1]=="n" and location:
-                    tree[location].name=input("Enter File Name:\n:>").removesuffix("\n")
+                    tree[location].name=input("Enter File Name:\n:> ").removesuffix("\n")
                     print(f"Successfully Changed File Name to {tree[location].name}")
                 elif cmd[1]=="t" and location:
-                    tree[location].fileType=input("Enter File Type:\n:>").removesuffix("\n")
+                    tree[location].fileType=input("Enter File Type:\n:> ").removesuffix("\n")
                     print(f"Successfully Changed File Type to {tree[location].fileType}")
                 else:
                     error(f"Unknown Property {cmd[1]}!")
