@@ -1,19 +1,19 @@
 34,37
 38,45
 46,52
-53,58
-59,66
-67,72
-73,79
-80,84
-85,89
-90,94
-95,101
-
-
-102,106
-107,111
-111,124
+53,61
+62,69
+70,75
+76,82
+83,87
+88,92
+93,97
+98,104
+105,108
+109,113
+114,119
+120,124
+125,137
 
 0: Commands (returns this list of commands)
 1: Check branch (shows your current location and parent nodes)
@@ -102,6 +102,10 @@ The second character defines if you want to copy the children, with 1 being yes 
 If you select yes, it would also make exact copies of the children, excluding node ID.
 Example: `A0` would create an exact replica of the file at your location, ignoring node ID.
 Example: `a1` would create an exact replica of the file at your location and its descendants, ignoring node ID.
+
+Clear
+Allows you to clear the terminal. That's it.
+Example: `b` would clear the terminal.
 
 Repeat
 Allows you to repeat a specific command `n` times.

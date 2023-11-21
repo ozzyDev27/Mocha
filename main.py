@@ -248,11 +248,12 @@ def runCommand(cmd):
                 print(open("commands/help","r").read())
             case _: #? Commands / Help Menu
                 if len(cmd)>1 and cmd.startswith("0"):
-                    if int(cmd[2],16) in range(16):
-                        i,j=open("commands/help","r").readlines()[int(cmd[2],16)].strip.split(",")
-                        print(''.join(open("commands/help","r").readlines()[i:j]))
-                    else: error("Parameter Error: Unknown Command!")
-                else:
-                    print(''.join(open("commands/help","r").readlines()[17:33]))
+                    if cmd[1].upper() in "0123456789ABCDEF":
+                        if int(cmd[1],16) in range(16):
+                            i,j=open("commands/help","r").readlines()[int(cmd[1],16)].strip().split(",")
+                            print(''.join(open("commands/help","r").readlines()[int(i):int(j)]))
+                        else: error("Parameter Error: Unknown Command!")
+                    else: print(''.join(open("commands/help","r").readlines()[17:33]))
+                else: print(''.join(open("commands/help","r").readlines()[17:33]))
 while running:
     runCommand(input("> "))
