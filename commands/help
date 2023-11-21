@@ -52,10 +52,13 @@ Example: `2` could return
 3: test.py (18)```
 
 Move / Teleport
-Allows you to move up or down the tree.
+Allows you to move up, down, or teleport throughout the tree.
 The second char will either be `1` or `u` for up, and `2` or `d` for down.
 If you are moving down, you need to choose the child you move to. This can be done by adding the index of the child you want to move to at the end. You can find the index of a child using the "Check Children" command, or 2.
+Finally, you can use the parameter `3` or `t` to teleport, with every character after that being the node ID of the node you are trying to move to. 
 Example: `3d2` would move you to the second child of the branch
+Example: `31` would move you to the parent of your location
+Example: `3327` would move you to node ID 27.
 
 Properties
 Allows you to check the properties of the file at your current location.

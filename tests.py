@@ -1,1 +1,1 @@
-print(int("a"))
+print(list(range(0,9,3)))

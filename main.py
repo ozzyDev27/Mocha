@@ -103,7 +103,7 @@ def safetyCheck():
 
 def areYouSure():
     chars=''.join(random.choice(string.ascii_letters) for i in range(3))
-    return input(f"Type in the following text: [{chars.upper()}]\n> ").lower()==chars.lower()
+    return input(f"Type in the following text: [{chars.upper()}]\n:> ").lower()==chars.lower()
 
 #test setups            0
 location=2   #          |
@@ -145,35 +145,37 @@ def runCommand(cmd):
                     print('\n'.join([f"{i}: {tree[j].name} [{j}]" for i,j in tree[location].checkChildren().items()]))
                 else: error("Children Error: No Children Found!")
             case "3":
-                if len(cmd)==1:
-                    error("Parameter Error: No Parameters!")
-                elif cmd[1] in ["1","u"]:
-                    if location:
-                        location=tree[location].parent
-                        print(f"Moved to [{location}] {tree[location].name}")
-                    else:
-                        error("Traversal Error: No Parent of Root Node!")
-                elif cmd[1] in ["2","d"]:
-                    try:
-                        if int(cmd[2]) in tree[location].checkChildren().keys():
-                            location=tree[location].checkChildren()[int(cmd[2])]
+                try:
+                    if len(cmd)==1:
+                        error("Parameter Error: No Parameters!")
+                    elif cmd[1] in ["1","u"]:
+                        if location:
+                            location=tree[location].parent
                             print(f"Moved to [{location}] {tree[location].name}")
                         else:
-                            error(f"Parameter Error: No Child {cmd[2]}")
-                    except:
-                        error(f"Parameter Error: Unkown Child {cmd[2]}")
-                elif cmd[1] in ["3","t"]:
-                    try:
-                        if int(cmd[2:]) in tree.keys():
-                            location=int(cmd[2:])
-                            print(f"Successfuly Moved to {tree[location].name} [{location}]!")
-                    except TypeError:
-                        error(f"Parameter Error: [{cmd[2:]}] is Not a Valid Node ID!")
-                else:
-                    error("Parameter Error: Unknown Traversal Direction!")
+                            error("Traversal Error: No Parent of Root Node!")
+                    elif cmd[1] in ["2","d"]:
+                        try:
+                            if int(cmd[2]) in tree[location].checkChildren().keys():
+                                location=tree[location].checkChildren()[int(cmd[2])]
+                                print(f"Moved to [{location}] {tree[location].name}")
+                            else:
+                                error(f"Parameter Error: No Child {cmd[2]}")
+                        except:
+                            error(f"Parameter Error: Unkown Child {cmd[2]}")
+                    elif cmd[1] in ["3","t"]:
+                        try:
+                            if int(cmd[2:]) in tree.keys():
+                                location=int(cmd[2:])
+                                print(f"Successfuly Moved to {tree[location].name} [{location}]!")
+                        except TypeError:
+                            error(f"Parameter Error: [{cmd[2:]}] is Not a Valid Node ID!")
+                    else:
+                        error("Parameter Error: Unknown Traversal Direction!")
+                except IndexError: error("Parameter Error: No Parameters Provided!")
             case "4":
                 fileType="-".join([i.removesuffix("\n") for i in open("commands/properties","r").readlines()]).split("-")
-                fileType={fileType[i-1]: fileType[i] for i in range(0, len(fileType), 2)}
+                fileType={fileType[i]: fileType[i+1] for i in range(0, len(fileType), 3)}
                 fileType=f"{fileType[tree[location].fileType]} [{tree[location].fileType}]" if tree[location].fileType in fileType.keys() else tree[location].fileType 
                 print(f"Name: {tree[location].name}\nNode ID: {tree[location].ID}\nFile Type: {fileType}\nMemory Location: {id(tree[location])}")
             case "5":
@@ -192,8 +194,8 @@ def runCommand(cmd):
             case "8":
                 if location:
                     if areYouSure():
-                        descendants=[location]+tree[location].descendants()
                         ghostLocation=tree[location].parent
+                        descendants=[location]+tree[location].descendants()
                         tree[tree[location].parent].children.remove(location)
                         while descendants:
                             location=descendants[0]
@@ -207,12 +209,14 @@ def runCommand(cmd):
                     error("Root Error: Cannot Delete Root!")
             case "9":
                 try:
-                    if int(cmd[1:]) in tree.keys() and location:
+                    if location and int(cmd[1:]) in tree.keys() and len(cmd)-1:
                         tree[location].parent=int(cmd[1:])
                         print(f"Successfully Swapped to Parent ID [{tree[location].parent}]")
+                    elif len(cmd)==1:
+                        error(f"Parameter Error: No Node ID Provided!")
                     else:
                         error(f"Parameter Error: Node ID [{int(cmd[1:])}] Doesn't Exist!")
-                except ValueError: error("Parameter Error: [{cmd[1:]}] is not a Valid Node ID!")
+                except ValueError: error(f"Parameter Error: [{cmd[1:]}] is not a Valid Node ID!")
             case "a":
                 if location:
                     tree[location].clone(tree[location].parent)
@@ -220,7 +224,7 @@ def runCommand(cmd):
                 else:
                     error("Root Error: Cannot Duplicate Root!")
             case "b":
-                pass
+                os.system('cls' if os.name=='nt' else 'clear')
             case "c":
                 toRepeat=input(":> ")
                 for i in range(int(cmd[1:])):
@@ -239,8 +243,10 @@ def runCommand(cmd):
                 if areYouSure():
                     global running
                     running=False
+                else:
+                    print("Cancelled Exiting Mocha!")
             case "z": #? debug cmd
-                print(tree)
+                print(open("commands/help","r").read())
             case _: #? Commands / Help Menu
                 if len(cmd)>1 and cmd.startswith("0"):
                     if int(cmd[2],16) in range(16):
