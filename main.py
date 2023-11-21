@@ -229,12 +229,12 @@ def runCommand(cmd):
                 for i in range(int(cmd[1:])):
                     runCommand(toRepeat)
             case "d":
-                with open("savedData.pkl", 'rb') as file:
+                with open("save.pkl", 'rb') as file:
                     tree=pickle.load(file)
                 print("Successfully Loaded Saved Data!")
             case "e":
                 safetyCheck()
-                with open("savedData.pkl", 'wb') as file: 
+                with open("save.pkl", 'wb') as file: 
                     pickle.dump(tree, file)
                 print("Successfully Saved Data!")
             case "f":
