@@ -255,5 +255,6 @@ def runCommand(cmd):
                         else: error("Parameter Error: Unknown Command!")
                     else: print(''.join(open("commands/help","r").readlines()[17:33]))
                 else: print(''.join(open("commands/help","r").readlines()[17:33]))
-while running:
+while running and __name__=="__main__":
     runCommand(input("> "))
+print("Goodbye!")
