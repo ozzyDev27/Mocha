@@ -115,13 +115,12 @@ newBranch(2) #5     4   5
 tree[2].fileType="txt"
 
 # --------------------------------- Open File -------------------------------- #
-def openFile():
-    global tree, location
-    match tree[location].fileType:
+def openFile(file):
+    match file.fileType:
         case "000":
             error("Open Error: Unable to Open Null File!")
         case _:
-            from commands.open.open_txt import window
+            from commands.open.txt import window
             textWindow=window(tree[location])
             textWindow.top()
 
@@ -180,15 +179,15 @@ def runCommand(cmd):
                 print(f"Name: {tree[location].name}\nNode ID: {tree[location].ID}\nFile Type: {fileType}\nMemory Location: {id(tree[location])}")
             case "5":
                 if cmd[1]=="n" and location:
-                    tree[location].name=input("Enter File Name: ").removesuffix("\n")
+                    tree[location].name=input("Enter File Name:\n:>").removesuffix("\n")
                     print(f"Successfully Changed File Name to {tree[location].name}")
                 elif cmd[1]=="t" and location:
-                    tree[location].fileType=input("Enter File Type: ").removesuffix("\n")
+                    tree[location].fileType=input("Enter File Type:\n:>").removesuffix("\n")
                     print(f"Successfully Changed File Type to {tree[location].fileType}")
                 else:
                     error(f"Unknown Property {cmd[1]}!")
             case "6": 
-                openFile()
+                openFile(tree[location])
             case "7":
                 newBranch(location)
             case "8":
