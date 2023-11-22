@@ -11,9 +11,10 @@ location=0 #would be a node ID - 0 is the root node's ID
 tree={} #all instances with nodeIDs as keys
 running=True
 
-def error(msg): #? def a useful function trust me
-    print(msg) #will probably eventually become useful in some way
-
+def error(msg,errortype): #? def a useful function trust me
+    print(f"{errortype} Error: {msg}") #will probably eventually become useful in some way
+def warning(msg):
+    print(msg)
 class Branch:
     def __init__(self, ID, parentID):
         self.name = "MissingNo."
@@ -27,7 +28,7 @@ class Branch:
         global tree
         if childNode in tree.keys():
             self.children.append(childNode)
-        else: error(f"ID Error: {childNode} is not a Valid ID!")
+        else: error(f"{childNode} is not a Valid ID!","ID")
     
     def removeChild(self,childNode):
         self.children = [child for child in self.children if child is not childNode]
@@ -36,19 +37,19 @@ class Branch:
         global tree
         if parentNode in tree.keys():
             self.parent=parentNode
-        else: error(f"ID Error: {parentNode} is not a Valid ID!")
+        else: error(f"{parentNode} is not a Valid ID!","ID")
         
     def traverseUp(self, nodeID):
         global location
         if type(self.parent)==int:
             location = self.parent
-        else: error(f"Traversal Error: No Parent Node {self.parent}!")
+        else: error(f"No Parent Node {self.parent}!","Traversal")
 
     def traverseDown(self, nodeID, moveTo):
         global location
         if moveTo in range(0,len(self.children)):
             location=moveTo
-        else: error(f"Index Error: No Child {moveTo}!")
+        else: error(f"No Child {moveTo}!","Index")
 
     def checkChildren(self):
         return {i+1:self.children[i] for i in range(len(self.children))}
@@ -117,7 +118,7 @@ tree[2].fileType="txt"
 def openFile(file):
     match file.fileType:
         case "000":
-            error("Open Error: Unable to Open Null File!")
+            error("Unable to Open Null File!","Open")
         case _:
             from commands.open.txt import window
             textWindow=window(tree[location])
@@ -141,50 +142,52 @@ def runCommand(cmd):
             case "2":
                 if len(tree[location].children):
                     print('\n'.join([f"{i}: {tree[j].name} [{j}]" for i,j in tree[location].checkChildren().items()]))
-                else: error("Children Error: No Children Found!")
+                else: error("No Children Found!","Children")
             case "3":
                 try:
                     if len(cmd)==1:
-                        error("Parameter Error: No Parameters!")
+                        error("No Parameters!","Parameter")
                     elif cmd[1] in ["1","u"]:
                         if location:
                             location=tree[location].parent
                             print(f"Moved to [{location}] {tree[location].name}")
                         else:
-                            error("Traversal Error: No Parent of Root Node!")
+                            error("No Parent of Root Node!","Traversal")
                     elif cmd[1] in ["2","d"]:
                         try:
                             if int(cmd[2]) in tree[location].checkChildren().keys():
                                 location=tree[location].checkChildren()[int(cmd[2])]
                                 print(f"Moved to [{location}] {tree[location].name}")
                             else:
-                                error(f"Parameter Error: No Child {cmd[2]}")
+                                error(f"No Child {cmd[2]}","Parameter")
                         except:
-                            error(f"Parameter Error: Unkown Child {cmd[2]}")
+                            error(f"{cmd[2]} isn't a Valid Node ID!","Parameter")
                     elif cmd[1] in ["3","t"]:
                         try:
                             if int(cmd[2:]) in tree.keys():
                                 location=int(cmd[2:])
                                 print(f"Successfuly Moved to {tree[location].name} [{location}]!")
                         except TypeError:
-                            error(f"Parameter Error: [{cmd[2:]}] is Not a Valid Node ID!")
+                            error(f"[{cmd[2:]}] is Not a Valid Node ID!","Parameter")
                     else:
-                        error("Parameter Error: Unknown Traversal Direction!")
-                except IndexError: error("Parameter Error: No Parameters Provided!")
+                        error("Unknown Traversal Direction!","Parameter")
+                except IndexError: error("No Parameters Provided!","Parameter")
             case "4":
                 fileType="-".join([i.removesuffix("\n") for i in open("commands/properties","r").readlines()]).split("-")
                 fileType={fileType[i]: fileType[i+1] for i in range(0, len(fileType), 3)}
                 fileType=f"{fileType[tree[location].fileType]} [{tree[location].fileType}]" if tree[location].fileType in fileType.keys() else tree[location].fileType 
                 print(f"Name: {tree[location].name}\nNode ID: {tree[location].ID}\nFile Type: {fileType}\nMemory Location: {id(tree[location])}")
             case "5":
-                if cmd[1]=="n" and location:
+                if len(cmd)==1:
+                    error("No Parameters!", "Parameter")
+                elif cmd[1]=="n" and location:
                     tree[location].name=input("Enter File Name:\n:> ").removesuffix("\n")
                     print(f"Successfully Changed File Name to {tree[location].name}")
                 elif cmd[1]=="t" and location:
                     tree[location].fileType=input("Enter File Type:\n:> ").removesuffix("\n")
                     print(f"Successfully Changed File Type to {tree[location].fileType}")
                 else:
-                    error(f"Unknown Property {cmd[1]}!")
+                    error(f"Unknown Property {cmd[1]}!","Parameter")
             case "6": 
                 openFile(tree[location])
             case "7":
@@ -204,23 +207,23 @@ def runCommand(cmd):
                     else:
                         print("Deletion Cancelled!")
                 else:
-                    error("Root Error: Cannot Delete Root!")
+                    error("Cannot Delete Root!","Root")
             case "9":
                 try:
                     if location and int(cmd[1:]) in tree.keys() and len(cmd)-1:
                         tree[location].parent=int(cmd[1:])
                         print(f"Successfully Swapped to Parent ID [{tree[location].parent}]")
                     elif len(cmd)==1:
-                        error(f"Parameter Error: No Node ID Provided!")
+                        error(f"No Node ID Provided!","Parameter")
                     else:
-                        error(f"Parameter Error: Node ID [{int(cmd[1:])}] Doesn't Exist!")
-                except ValueError: error(f"Parameter Error: [{cmd[1:]}] is not a Valid Node ID!")
+                        error(f"Node ID [{int(cmd[1:])}] Doesn't Exist!","Parameter")
+                except ValueError: error(f"[{cmd[1:]}] is not a Valid Node ID!","Parameter")
             case "a":
                 if location:
                     tree[location].clone(tree[location].parent)
                     print(f"Successfuly Cloned {tree[location].name} [{location}]")
                 else:
-                    error("Root Error: Cannot Duplicate Root!")
+                    error("Cannot Duplicate Root!","Root")
             case "b":
                 os.system('cls' if os.name=='nt' else 'clear')
             case "c":
@@ -252,7 +255,7 @@ def runCommand(cmd):
                         if int(cmd[1],16) in range(16):
                             i,j=open("commands/help","r").readlines()[int(cmd[1],16)].strip().split(",")
                             print(''.join(open("commands/help","r").readlines()[int(i):int(j)]))
-                        else: error("Parameter Error: Unknown Command!")
+                        else: error("Unknown Command!","Parameter")
                     else: print(''.join(open("commands/help","r").readlines()[17:33]))
                 else: print(''.join(open("commands/help","r").readlines()[17:33]))
 while running and __name__=="__main__":
