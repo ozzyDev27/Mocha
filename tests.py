@@ -1,7 +1,7 @@
 import os
 from main import runCommand
 from contextlib import contextmanager
-os.system("") # apparently this enables colors on widnowd
+os.system("")
 
 GREEN = "\033[1;32m"
 RED = "\033[1;31m"
