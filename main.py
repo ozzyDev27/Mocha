@@ -1,7 +1,6 @@
 import time
 import math
 import os
-from copy import deepcopy
 import random
 import string
 from tkinter import *
