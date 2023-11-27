@@ -95,11 +95,13 @@ tree[0]=Branch(0,None)
 tree[0].name="root"
 
 def safetyCheck():
-    global tree
+    global tree,location
     for i in tree.values(): #? checks for unknown parents
         i.parent=0 if i.parent not in tree.keys() else i.parent
     for i in tree.values(): #? checks for unknown children
         i.children=[j for j in i.children if j in tree.keys()]
+    if location not in tree.keys():
+        location=0
 
 def areYouSure():
     chars=''.join(random.choice(string.ascii_letters) for i in range(3))
