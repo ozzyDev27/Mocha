@@ -10,9 +10,10 @@ import pickle
 location=0 #would be a node ID - 0 is the root node's ID
 tree={} #all instances with nodeIDs as keys
 running=True
+with open('commands/properties', 'r') as file:types={end.split("-")[0]:end.split("-")[2].strip() for end in file.readlines()}
 
 def error(msg,errortype): #? def a useful function trust me
-    print(f"{errortype} Error: {msg}") #will probably eventually become useful in some way
+    print(f"{errortype} Error: {msg}")
 def warning(msg):
     print(msg)
 class Branch:
@@ -20,7 +21,7 @@ class Branch:
         self.name = "MissingNo."
         self.ID = ID
         self.fileType= "000"
-        self.data = None
+        self.data = ""
         self.children = []
         self.parent = parentID
 
@@ -107,6 +108,7 @@ def areYouSure():
     chars=''.join(random.choice(string.ascii_letters) for i in range(3))
     return input(f"Type in the following text: [{chars.upper()}]\n:> ").lower()==chars.lower()
 
+print(types)
 #test setups            0
 location=2   #          |
 newBranch(0) #1         1
@@ -118,9 +120,11 @@ tree[2].fileType="txt"
 
 # --------------------------------- Open File -------------------------------- #
 def openFile(file):
-    match file.fileType:
-        case "000":
+    match types[file.fileType]:
+        case "null":
             error("Unable to Open Null File!","Open")
+        case "image":
+            pass
         case _:
             from commands.open.txt import window
             textWindow=window(tree[location])
@@ -144,7 +148,7 @@ def runCommand(cmd):
             case "2":
                 if len(tree[location].children):
                     print('\n'.join([f"{i}: {tree[j].name} [{j}]" for i,j in tree[location].checkChildren().items()]))
-                else: error("No Children Found!","Children")
+                else: print("No Children Found!")
             case "3":
                 try:
                     if len(cmd)==1:
@@ -161,7 +165,7 @@ def runCommand(cmd):
                                 location=tree[location].checkChildren()[int(cmd[2])]
                                 print(f"Moved to [{location}] {tree[location].name}")
                             else:
-                                error(f"No Child {cmd[2]}","Parameter")
+                                error(f"No Child {cmd[2]}!","Parameter")
                         except:
                             error(f"{cmd[2]} isn't a Valid Node ID!","Parameter")
                     elif cmd[1] in ["3","t"]:
@@ -178,7 +182,7 @@ def runCommand(cmd):
                 fileType="-".join([i.removesuffix("\n") for i in open("commands/properties","r").readlines()]).split("-")
                 fileType={fileType[i]: fileType[i+1] for i in range(0, len(fileType), 3)}
                 fileType=f"{fileType[tree[location].fileType]} [{tree[location].fileType}]" if tree[location].fileType in fileType.keys() else tree[location].fileType 
-                print(f"Name: {tree[location].name}\nNode ID: {tree[location].ID}\nFile Type: {fileType}\nMemory Location: {id(tree[location])}")
+                print(f"Name: {tree[location].name}\nNode ID: {tree[location].ID}\nFile Type: {fileType}\nMemory Location: {id(tree[location])}\nFile Size: {len(str(tree[location].data))}")
             case "5":
                 if len(cmd)==1:
                     error("No Parameters!", "Parameter")
@@ -229,9 +233,12 @@ def runCommand(cmd):
             case "b":
                 os.system('cls' if os.name=='nt' else 'clear')
             case "c":
-                toRepeat=input(":> ")
-                for i in range(int(cmd[1:])):
-                    runCommand(toRepeat)
+                if len(cmd)==1:
+                    error("No Parameters!","Parameter")
+                else:
+                    toRepeat=input(":> ")
+                    for i in range(int(cmd[1:])):
+                        runCommand(toRepeat)
             case "d":
                 with open("save.pkl", 'rb') as file:
                     tree=pickle.load(file)
@@ -250,7 +257,7 @@ def runCommand(cmd):
                 else:
                     print("Cancelled Exiting Mocha!")
             case "z": #? debug cmd
-                print(open("commands/help","r").read())
+                print(cmd[1:])
             case _: #? Commands / Help Menu
                 if len(cmd)>1 and cmd.startswith("0"):
                     if cmd[1].upper() in "0123456789ABCDEF":
