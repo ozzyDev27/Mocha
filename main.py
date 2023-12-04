@@ -108,7 +108,6 @@ def areYouSure():
     chars=''.join(random.choice(string.ascii_letters) for i in range(3))
     return input(f"Type in the following text: [{chars.upper()}]\n:> ").lower()==chars.lower()
 
-print(types)
 #test setups            0
 location=2   #          |
 newBranch(0) #1         1
@@ -175,6 +174,8 @@ def runCommand(cmd):
                                 print(f"Successfuly Moved to {tree[location].name} [{location}]!")
                         except TypeError:
                             error(f"[{cmd[2:]}] is Not a Valid Node ID!","Parameter")
+                        except ValueError:
+                            error("No Node ID Provided!", "Parameter")
                     else:
                         error("Unknown Traversal Direction!","Parameter")
                 except IndexError: error("No Parameters Provided!","Parameter")
@@ -197,6 +198,7 @@ def runCommand(cmd):
             case "6": 
                 openFile(tree[location])
             case "7":
+                print(f"Successfully Created a Branch With Node ID [{next((i for i,j in enumerate(sorted(tree.keys()),start=min(sorted(tree.keys()))) if i!= j), max(sorted(tree.keys()))+1)}]!")
                 newBranch(location)
             case "8":
                 if location:
