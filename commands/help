@@ -110,7 +110,7 @@ Example: `b` would clear the terminal.
 Repeat
 Allows you to repeat a specific command `n` times.
 Once you run the command, there will be an input field for the command you want to repeat.
-Example: `E12` would bring up an input field, and if I input `7`, it would create 12 children of the node at your location.
+Example: `c12` would bring up an input field, and if I input `7`, it would create 12 children of the node at your location.
 
 Load
 Allows you to load a saved tree, so you can use Mocha throughout runs.

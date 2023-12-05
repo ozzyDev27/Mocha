@@ -76,8 +76,7 @@ class Branch:
     def clone(self,newParent):
         global tree
         keys = sorted(tree.keys())
-        duplicateLocation = next((i for i,j in enumerate(keys,start=min(keys)) if i!=j), max(keys)+1)    
-        newBranch(newParent)
+        duplicateLocation = newBranch(newParent)
         tree[duplicateLocation].name=self.name
         tree[duplicateLocation].fileType=self.fileType
         tree[duplicateLocation].data=self.data
@@ -91,6 +90,7 @@ def newBranch(parentID):
     newID = next((i for i,j in enumerate(keys,start=min(keys)) if i!= j), max(keys)+1)
     tree[newID]=Branch(newID,parentID)
     tree[parentID].addChild(newID)
+    return newID
 
 tree[0]=Branch(0,None)
 tree[0].name="root"
@@ -204,7 +204,7 @@ def runCommand(cmd):
                 if location:
                     if areYouSure():
                         ghostLocation=tree[location].parent
-                        descendants=[location]+tree[location].descendants()
+                        descendants=tree[location].descendants()
                         tree[tree[location].parent].children.remove(location)
                         while descendants:
                             location=descendants[0]
@@ -228,8 +228,19 @@ def runCommand(cmd):
                 except ValueError: error(f"[{cmd[1:]}] is not a Valid Node ID!","Parameter")
             case "a":
                 if location:
-                    tree[location].clone(tree[location].parent)
-                    print(f"Successfuly Cloned {tree[location].name} [{location}]")
+                    try:
+                        if cmd[1]=="1":
+                            tree[location].clone(tree[location].parent)
+                            print(f"Successfuly Cloned {tree[location].name} [{location}]")
+                        elif cmd[1]=="0":
+                            duplicateLocation = newBranch(newParent)
+                            tree[duplicateLocation].name=tree[location].name
+                            tree[duplicateLocation].fileType=tree[location].fileType
+                            tree[duplicateLocation].data=tree[location].data
+                        else:
+                            error("Unknown Duplicate Type!", "Parameter")
+                    except IndexError:
+                        error("No Parameters!","Parameter")
                 else:
                     error("Cannot Duplicate Root!","Root")
             case "b":
