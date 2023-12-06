@@ -49,7 +49,7 @@ Shows a list of all children and their IDs of your current branch.
 Example: <2> could return
 1: childOne.txt (16)
 2: child (17)
-3: test.py (18)
+3: test (18)
 
 Move / Teleport
 Allows you to move up, down, or teleport throughout the tree.
