@@ -20,4 +20,4 @@ Under the `root` file you have total control - you have full privileges to edit,
 ## Standards
 smth abt using <> for cmds and [] for node IDs
 
-#todo: add more
+#todo for 2024: add more
