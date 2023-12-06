@@ -229,7 +229,9 @@ def runCommand(cmd,withinLoop):
             case "9":
                 try:
                     if location and int(cmd[1:]) in tree.keys() and len(cmd)-1 and int(cmd[1:])!=location:
+                        tree[tree[location].parent].children.pop(tree[tree[location].parent].children.index(location))
                         tree[location].parent=int(cmd[1:])
+                        tree[tree[location].parent].children.append(location)
                         print(f"Successfully Swapped to Parent ID [{tree[location].parent}]")
                     elif int(cmd[1:])==location:
                         error("Cannot Change Parent to Itself!", "Parameter")

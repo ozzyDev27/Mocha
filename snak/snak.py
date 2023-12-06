@@ -1,0 +1,2 @@
+def runSnak(code):
+    pass
