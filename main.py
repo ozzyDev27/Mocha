@@ -99,7 +99,7 @@ tree[0].name="root"
 def safetyCheck():
     global tree,location
     for i in tree.values():
-        i.parent=0 if i.parent==i.ID or i.parent not in tree.keys() else i.parent #? checks for unknown parents
+        i.parent=0 if i.parent==i.ID or i.parent not in tree.keys() else i.parent #? checks for unknown parents or self-parenting
         i.children=[j for j in i.children if j in tree.keys()]  #? checks for unknown children
     if location not in tree.keys():
         location=0
