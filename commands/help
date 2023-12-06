@@ -34,83 +34,83 @@ F: Exit (exits Mocha)
 
 Commands / Help List
 Brings up a list of all commands, or if you have a parameter at character 2, explains that command
-Example: `02` would return an in-depth explanation of the second command, or the "check children" command.
+Example: <02> would return an in-depth explanation of the second command, or the "check children" command.
 
 Check Branch
 Shows your current branch, and all ancestors of that branch.
 It would also show you the IDs of each ancestor in brackets.
-Example: `1` could return   
-```1: root (0)
+Example: <1> could return   
+1: root (0)
 2: files (3)
-3: thisFile.txt (15)```
+3: thisFile.txt (15)
 
 Check Children
 Shows a list of all children and their IDs of your current branch.
-Example: `2` could return
-```1: childOne.txt (16)
+Example: <2> could return
+1: childOne.txt (16)
 2: child (17)
-3: test.py (18)```
+3: test.py (18)
 
 Move / Teleport
 Allows you to move up, down, or teleport throughout the tree.
-The second char will either be `1` or `u` for up, and `2` or `d` for down.
+The second char will either be <1> or <u> for up, and <2> or <d> for down.
 If you are moving down, you need to choose the child you move to. This can be done by adding the index of the child you want to move to at the end. You can find the index of a child using the "Check Children" command, or 2.
-Finally, you can use the parameter `3` or `t` to teleport, with every character after that being the node ID of the node you are trying to move to. 
-Example: `3d2` would move you to the second child of the branch
-Example: `31` would move you to the parent of your location
-Example: `3327` would move you to node ID 27.
+Finally, you can use the parameter <3> or <t> to teleport, with every character after that being the node ID of the node you are trying to move to. 
+Example: <3d2> would move you to the second child of the branch
+Example: <31> would move you to the parent of your location
+Example: <3327> would move you to node ID [27].
 
 Properties
 Allows you to check the properties of the file at your current location.
-Example: `4` could give you
-```Name: "thisFile"
-Node ID: 27
+Example: <4> could give you
+Name: "thisFile"
+Node ID: [27]
 File Type: txt (Text File)
-Memory Location: 1947052342336```
+Memory Location: 1947052342336
 
 Edit
 Allows you to edit the properties of a file.  
-The second character would be what you want to edit, with `n` being name and `t` being file type.
+The second character would be what you want to edit, with <n> being name and <t> being file type.
 Once you run this command, it will ask for a further input, which will be what you are changing the property to.
-Example: `5t` would bring up an input, where if you enter `txt`, the file type would change to a text file.
+Example: <5t> would bring up an input, where if you enter <txt>, the file type would change to a text file.
 
 Open
 Allows you to view the data of a file. In some cases, you can edit the data as well.
 If you open an image file, it will open a new window that is view-only,
 but if you open a text file or text-containing file (such as a python file),
 it will open a window where you can also edit.
-Example: `6` would open the file at your current location.
+Example: <6> would open the file at your current location.
 
 Create
 Allows you to create a child of the node at your location.
 On creation, the file type will be null, it will contain no data, and have a placeholder name.
-Example: `7` would create a blank file that is a child of the node at your location.
+Example: <7> would create a blank file that is a child of the node at your location.
 
 Delete
 Allows you to delete the node at your current location, and then moves you to the parent node.
 It also deletes every child and descendant of the node. It will give a confirmation, to make sure you don't accidentally delete it.
-Example: `8` would give the confirmation and delete the file, then move you to the parent node.
+Example: <8> would give the confirmation and delete the file, then move you to the parent node.
 
 Relocate
 Allows you to change the parent of the node at your location.
 There is only one parameter, which is the ID of the node you are changing to.
-Example: `927` would change the parent of the current file from `[previous parent]` to node ID `27`.
+Example: <927> would change the parent of the current file to node ID [27].
 
 Duplicate
 Allows you to make an exact copy of the node at your location. (Doesn't include node ID.)
 The second character defines if you want to copy the children, with 1 being yes and 0 being no.
 If you select yes, it would also make exact copies of the children, excluding node ID.
-Example: `A0` would create an exact replica of the file at your location, ignoring node ID.
-Example: `a1` would create an exact replica of the file at your location and its descendants, ignoring node ID.
+Example: <A0> would create an exact replica of the file at your location, ignoring node ID.
+Example: <a1> would create an exact replica of the file at your location and its descendants, ignoring node ID.
 
 Clear
 Allows you to clear the terminal. That's it.
-Example: `b` would clear the terminal.
+Example: <b> would clear the terminal.
 
 Repeat
-Allows you to repeat a specific command `n` times.
+Allows you to repeat a specific command <n> times.
 Once you run the command, there will be an input field for the command you want to repeat.
-Example: `c12` would bring up an input field, and if I input `7`, it would create 12 children of the node at your location.
+Example: <c12> would bring up an input field, and if I input <7>, it would create 12 children of the node at your location.
 
 Load
 Allows you to load a saved tree, so you can use Mocha throughout runs.
@@ -121,7 +121,7 @@ the tree would go back to before the file was deleted. This works between python
 Save
 Allows you to save the tree, so you can close and run Mocha without losing data. 
 Also allows you to perform a safety check, and if there is a problem, automatically fixes it.
-Example: If your location doesn't exist and you run the command, it will set your location to 0, or root. It would then proceed to save the tree.
+Example: If your location doesn't exist and you run the command, it will set your location to [0], or root. It would then proceed to save the tree.
 
 Exit
 Bit obvious what this command does.
@@ -130,7 +130,7 @@ And then go outside.
 Breathe in the air.
 Realise you have wasted your life.
 You have spent so much of your time learning what little 1s and 0s do.
-The constant flashing of lights in a specific pattern, at a specific time, at a specific brightness, on a screen.
+The constant flashing of lights in a specific pattern, at a specific time, at a specific brightness, on a single screen.
 The constant errors and failures.
 And yet.
 

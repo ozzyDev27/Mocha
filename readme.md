@@ -17,5 +17,7 @@ This means that you can have a text file be a parent of another file, and still 
 There is also a new file type - null. This basically acts as an empty file, and can be used as a stand-in for folders.
 All trees have a root file, which is null. Its only purpose is to connect all the branches.  
 Under the "root" file you have total control - you have full privileges to edit, create, and delete.  
+## Standards
+smth abt using <> for cmds and [] for node IDs
 
 #todo: add more

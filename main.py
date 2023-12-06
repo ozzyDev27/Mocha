@@ -12,10 +12,11 @@ tree={} #all instances with nodeIDs as keys
 running=True
 with open('commands/properties', 'r') as file:types={end.split("-")[0]:end.split("-")[2].strip() for end in file.readlines()}
 
-def error(msg,errortype): #? def a useful function trust me
+def error(msg,errortype):
     print(f"{errortype} Error: {msg}")
-def warning(msg):
-    print(msg)
+def forHelp(cmd): #? will use later
+    print(f"Use <0{cmd[0]}> for help!")
+
 class Branch:
     def __init__(self, ID, parentID):
         self.name = "MissingNo."
@@ -97,10 +98,9 @@ tree[0].name="root"
 
 def safetyCheck():
     global tree,location
-    for i in tree.values(): #? checks for unknown parents
-        i.parent=0 if i.parent not in tree.keys() else i.parent
-    for i in tree.values(): #? checks for unknown children
-        i.children=[j for j in i.children if j in tree.keys()]
+    for i in tree.values():
+        i.parent=0 if i.parent==i.ID or i.parent not in tree.keys() else i.parent #? checks for unknown parents
+        i.children=[j for j in i.children if j in tree.keys()]  #? checks for unknown children
     if location not in tree.keys():
         location=0
 
@@ -130,7 +130,7 @@ def openFile(file):
             textWindow.top()
 
 # ------------------------------------ Loop ----------------------------------- #
-def runCommand(cmd):
+def runCommand(cmd,withinLoop):
     global tree,location
     if len(cmd):
         match cmd[0].lower():
@@ -160,11 +160,11 @@ def runCommand(cmd):
                             error("No Parent of Root Node!","Traversal")
                     elif cmd[1] in ["2","d"]:
                         try:
-                            if int(cmd[2]) in tree[location].checkChildren().keys():
-                                location=tree[location].checkChildren()[int(cmd[2])]
+                            if int(cmd[2:]) in tree[location].checkChildren().keys():
+                                location=tree[location].checkChildren()[int(cmd[2:])]
                                 print(f"Moved to [{location}] {tree[location].name}")
                             else:
-                                error(f"No Child {cmd[2]}!","Parameter")
+                                error(f"No Child {cmd[2:]}!","Parameter")
                         except:
                             error(f"{cmd[2]} isn't a Valid Node ID!","Parameter")
                     elif cmd[1] in ["3","t"]:
@@ -183,7 +183,7 @@ def runCommand(cmd):
                 fileType="-".join([i.removesuffix("\n") for i in open("commands/properties","r").readlines()]).split("-")
                 fileType={fileType[i]: fileType[i+1] for i in range(0, len(fileType), 3)}
                 fileType=f"{fileType[tree[location].fileType]} [{tree[location].fileType}]" if tree[location].fileType in fileType.keys() else tree[location].fileType 
-                print(f"Name: {tree[location].name}\nNode ID: {tree[location].ID}\nFile Type: {fileType}\nMemory Location: {id(tree[location])}\nFile Size: {len(str(tree[location].data))}")
+                print(f"Name: {tree[location].name}\nNode ID: [{tree[location].ID}]\nParent ID: [{tree[location].parent}]\nFile Type: {fileType}\nMemory Location: {id(tree[location])}\nFile Size: {len(str(tree[location].data))}")
             case "5":
                 if len(cmd)==1:
                     error("No Parameters!", "Parameter")
@@ -202,7 +202,17 @@ def runCommand(cmd):
                 newBranch(location)
             case "8":
                 if location:
-                    if areYouSure():
+                    if withinLoop:
+                        ghostLocation=tree[location].parent
+                        descendants=tree[location].descendants()
+                        tree[tree[location].parent].children.remove(location)
+                        while descendants:
+                            location=descendants[0]
+                            tree[location].destroy()
+                            descendants.pop(0)
+                        location=ghostLocation
+                        print("Deletion Successful!")
+                    elif areYouSure():
                         ghostLocation=tree[location].parent
                         descendants=tree[location].descendants()
                         tree[tree[location].parent].children.remove(location)
@@ -218,11 +228,13 @@ def runCommand(cmd):
                     error("Cannot Delete Root!","Root")
             case "9":
                 try:
-                    if location and int(cmd[1:]) in tree.keys() and len(cmd)-1:
+                    if location and int(cmd[1:]) in tree.keys() and len(cmd)-1 and int(cmd[1:])!=location:
                         tree[location].parent=int(cmd[1:])
                         print(f"Successfully Swapped to Parent ID [{tree[location].parent}]")
+                    elif int(cmd[1:])==location:
+                        error("Cannot Change Parent to Itself!", "Parameter")
                     elif len(cmd)==1:
-                        error(f"No Node ID Provided!","Parameter")
+                        error("No Node ID Provided!","Parameter")
                     else:
                         error(f"Node ID [{int(cmd[1:])}] Doesn't Exist!","Parameter")
                 except ValueError: error(f"[{cmd[1:]}] is not a Valid Node ID!","Parameter")
@@ -237,6 +249,7 @@ def runCommand(cmd):
                             tree[duplicateLocation].name=tree[location].name
                             tree[duplicateLocation].fileType=tree[location].fileType
                             tree[duplicateLocation].data=tree[location].data
+                            print(f"Successfuly Cloned {tree[location].name} [{location}]")
                         else:
                             error("Unknown Duplicate Type!", "Parameter")
                     except IndexError:
@@ -250,8 +263,12 @@ def runCommand(cmd):
                     error("No Parameters!","Parameter")
                 else:
                     toRepeat=input(":> ")
-                    for i in range(int(cmd[1:])):
-                        runCommand(toRepeat)
+                    if areYouSure():
+                        for i in range(int(cmd[1:])):
+                            runCommand(toRepeat,True)
+                        print(f"Completed {int(cmd[1:])} Repeats of <{toRepeat}>!")
+                    else:
+                        print(f"Cancelled {int(cmd[1:])} Repeats of <{toRepeat}>!")
             case "d":
                 with open("save.pkl", 'rb') as file:
                     tree=pickle.load(file)
@@ -270,7 +287,7 @@ def runCommand(cmd):
                 else:
                     print("Cancelled Exiting Mocha!")
             case "z": #? debug cmd
-                print(cmd[1:])
+                safetyCheck()
             case _: #? Commands / Help Menu
                 if len(cmd)>1 and cmd.startswith("0"):
                     if cmd[1].upper() in "0123456789ABCDEF":
@@ -281,5 +298,5 @@ def runCommand(cmd):
                     else: print(''.join(open("commands/help","r").readlines()[17:33]))
                 else: print(''.join(open("commands/help","r").readlines()[17:33]))
 while running and __name__=="__main__":
-    runCommand(input("> "))
+    runCommand(input("> "),False)
 print("Goodbye!")
