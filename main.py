@@ -202,17 +202,7 @@ def runCommand(cmd,withinLoop):
                 newBranch(location)
             case "8":
                 if location:
-                    if withinLoop:
-                        ghostLocation=tree[location].parent
-                        descendants=tree[location].descendants()
-                        tree[tree[location].parent].children.remove(location)
-                        while descendants:
-                            location=descendants[0]
-                            tree[location].destroy()
-                            descendants.pop(0)
-                        location=ghostLocation
-                        print("Deletion Successful!")
-                    elif areYouSure():
+                    if withinLoop or areYouSure():
                         ghostLocation=tree[location].parent
                         descendants=tree[location].descendants()
                         tree[tree[location].parent].children.remove(location)
