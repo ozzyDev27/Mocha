@@ -65,6 +65,7 @@ Allows you to check the properties of the file at your current location.
 Example: <4> could give you
 Name: "thisFile"
 Node ID: [27]
+Parent ID: [15]
 File Type: txt (Text File)
 Memory Location: 1947052342336
 
