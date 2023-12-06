@@ -99,7 +99,7 @@ tree[0].name="root"
 def safetyCheck():
     global tree,location
     for i in tree.values():
-        i.parent=0 if i.parent==i.ID or i.parent not in tree.keys() else i.parent #? checks for unknown parents
+        i.parent=0 if i.parent==i.ID or i.parent not in tree.keys() else i.parent #? checks for unknown parents or self-parenting
         i.children=[j for j in i.children if j in tree.keys()]  #? checks for unknown children
     if location not in tree.keys():
         location=0
@@ -193,26 +193,17 @@ def runCommand(cmd,withinLoop):
                 elif cmd[1]=="t" and location:
                     tree[location].fileType=input("Enter File Type:\n:> ").removesuffix("\n")
                     print(f"Successfully Changed File Type to {tree[location].fileType}")
+                elif not location:
+                    error("Cannot Edit Properties of Root Node!","Root")
                 else:
                     error(f"Unknown Property {cmd[1]}!","Parameter")
             case "6": 
                 openFile(tree[location])
             case "7":
-                print(f"Successfully Created a Branch With Node ID [{next((i for i,j in enumerate(sorted(tree.keys()),start=min(sorted(tree.keys()))) if i!= j), max(sorted(tree.keys()))+1)}]!")
-                newBranch(location)
+                print(f"Successfully Created a Branch With Node ID [{newBranch(location)}]!")
             case "8":
                 if location:
-                    if withinLoop:
-                        ghostLocation=tree[location].parent
-                        descendants=tree[location].descendants()
-                        tree[tree[location].parent].children.remove(location)
-                        while descendants:
-                            location=descendants[0]
-                            tree[location].destroy()
-                            descendants.pop(0)
-                        location=ghostLocation
-                        print("Deletion Successful!")
-                    elif areYouSure():
+                    if withinLoop or areYouSure():
                         ghostLocation=tree[location].parent
                         descendants=tree[location].descendants()
                         tree[tree[location].parent].children.remove(location)
@@ -293,14 +284,13 @@ def runCommand(cmd,withinLoop):
             case "z": #? debug cmd
                 safetyCheck()
             case _: #? Commands / Help Menu
-                if len(cmd)>1 and cmd.startswith("0"):
-                    if cmd[1].upper() in "0123456789ABCDEF":
-                        if int(cmd[1],16) in range(16):
-                            i,j=open("commands/help","r").readlines()[int(cmd[1],16)].strip().split(",")
-                            print(''.join(open("commands/help","r").readlines()[int(i):int(j)]))
-                        else: error("Unknown Command!","Parameter")
-                    else: print(''.join(open("commands/help","r").readlines()[17:33]))
+                if len(cmd)>1 and cmd.startswith("0") and cmd[1].upper() in "0123456789ABCDEF":
+                    if int(cmd[1],16) in range(16):
+                        i,j=open("commands/help","r").readlines()[int(cmd[1],16)].strip().split(",")
+                        print(''.join(open("commands/help","r").readlines()[int(i):int(j)]))
+                    else: error("Unknown Command!","Parameter")
                 else: print(''.join(open("commands/help","r").readlines()[17:33]))
+
 while running and __name__=="__main__":
     runCommand(input("> "),False)
 print("Goodbye!")
