@@ -193,6 +193,8 @@ def runCommand(cmd,withinLoop):
                 elif cmd[1]=="t" and location:
                     tree[location].fileType=input("Enter File Type:\n:> ").removesuffix("\n")
                     print(f"Successfully Changed File Type to {tree[location].fileType}")
+                elif not location:
+                    error("Cannot Edit Properties of Root Node!","Root")
                 else:
                     error(f"Unknown Property {cmd[1]}!","Parameter")
             case "6": 
