@@ -233,6 +233,8 @@ def runCommand(cmd,withinLoop):
                         tree[location].parent=int(cmd[1:])
                         tree[tree[location].parent].children.append(location)
                         print(f"Successfully Swapped to Parent ID [{tree[location].parent}]")
+                    elif not location:
+                        error("Cannot Change Parent of Root Node!","Root")
                     elif int(cmd[1:])==location:
                         error("Cannot Change Parent to Itself!", "Parameter")
                     elif len(cmd)==1:
