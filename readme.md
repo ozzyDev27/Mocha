@@ -1,6 +1,6 @@
 # Mocha
 is a small, simple, tree-based operating system!  
-Eventually it will have support for many more things, but right now it's just this.  
+It's just this.  
 ## Using a Command
 Mocha is based on a tree, and each file has a parent and may have children.  
 To start, enter the command <`00`> into the terminal.  
