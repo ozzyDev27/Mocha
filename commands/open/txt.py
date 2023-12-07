@@ -9,4 +9,5 @@ class window:
         self.text.pack(fill=BOTH,expand=True)
         self.app.mainloop()
     def data(self):
-        return self.text.get("1.0","end-1c")    
+        return self.text.get("1.0","end-1c")
+    
