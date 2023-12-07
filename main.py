@@ -26,12 +26,6 @@ class Branch:
         self.children = []
         self.parent = parentID
 
-    def addChild(self, childNode):
-        global tree
-        if childNode in tree.keys():
-            self.children.append(childNode)
-        else: error(f"{childNode} is not a Valid ID!","ID")
-
     def checkChildren(self):
         return {i+1:self.children[i] for i in range(len(self.children))}
     
@@ -69,7 +63,7 @@ def newBranch(parentID):
     keys = sorted(tree.keys())
     newID = next((i for i,j in enumerate(keys,start=min(keys)) if i!= j), max(keys)+1)
     tree[newID]=Branch(newID,parentID)
-    tree[parentID].addChild(newID)
+    tree[parentID].children.append(newID)
     return newID
 
 tree[0]=Branch(0,None)
