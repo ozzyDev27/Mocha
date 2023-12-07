@@ -31,15 +31,6 @@ class Branch:
         if childNode in tree.keys():
             self.children.append(childNode)
         else: error(f"{childNode} is not a Valid ID!","ID")
-    
-    def removeChild(self,childNode):
-        self.children = [child for child in self.children if child is not childNode]
-    
-    def changeParent(self,parentNode):
-        global tree
-        if parentNode in tree.keys():
-            self.parent=parentNode
-        else: error(f"{parentNode} is not a Valid ID!","ID")
 
     def checkChildren(self):
         return {i+1:self.children[i] for i in range(len(self.children))}
