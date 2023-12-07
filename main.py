@@ -31,27 +31,6 @@ class Branch:
         if childNode in tree.keys():
             self.children.append(childNode)
         else: error(f"{childNode} is not a Valid ID!","ID")
-    
-    def removeChild(self,childNode):
-        self.children = [child for child in self.children if child is not childNode]
-    
-    def changeParent(self,parentNode):
-        global tree
-        if parentNode in tree.keys():
-            self.parent=parentNode
-        else: error(f"{parentNode} is not a Valid ID!","ID")
-        
-    def traverseUp(self, nodeID):
-        global location
-        if type(self.parent)==int:
-            location = self.parent
-        else: error(f"No Parent Node {self.parent}!","Traversal")
-
-    def traverseDown(self, nodeID, moveTo):
-        global location
-        if moveTo in range(0,len(self.children)):
-            location=moveTo
-        else: error(f"No Child {moveTo}!","Index")
 
     def checkChildren(self):
         return {i+1:self.children[i] for i in range(len(self.children))}
@@ -100,7 +79,7 @@ def safetyCheck():
     global tree,location
     for i in tree.values():
         i.parent=0 if i.parent==i.ID or i.parent not in tree.keys() else i.parent #? checks for unknown parents or self-parenting
-        i.children=[j for j in i.children if j in tree.keys()]  #? checks for unknown children
+        i.children=[j for j in i.children if j in tree.keys() and j!=i.ID]  #? checks for unknown children and self-childrening
     if location not in tree.keys():
         location=0
 
@@ -258,10 +237,12 @@ def runCommand(cmd,withinLoop):
                     error("No Parameters!","Parameter")
                 else:
                     toRepeat=input(":> ")
-                    if areYouSure():
+                    if toRepeat[0].lower()!="c" and areYouSure():
                         for i in range(int(cmd[1:])):
                             runCommand(toRepeat,True)
                         print(f"Completed {int(cmd[1:])} Repeats of <{toRepeat}>!")
+                    elif toRepeat[0].lower()=="c":
+                        error("Cannot Nest Repeats!","Parameter")
                     else:
                         print(f"Cancelled {int(cmd[1:])} Repeats of <{toRepeat}>!")
             case "d":
