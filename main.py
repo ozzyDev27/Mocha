@@ -40,18 +40,6 @@ class Branch:
         if parentNode in tree.keys():
             self.parent=parentNode
         else: error(f"{parentNode} is not a Valid ID!","ID")
-        
-    def traverseUp(self, nodeID):
-        global location
-        if type(self.parent)==int:
-            location = self.parent
-        else: error(f"No Parent Node {self.parent}!","Traversal")
-
-    def traverseDown(self, nodeID, moveTo):
-        global location
-        if moveTo in range(0,len(self.children)):
-            location=moveTo
-        else: error(f"No Child {moveTo}!","Index")
 
     def checkChildren(self):
         return {i+1:self.children[i] for i in range(len(self.children))}
