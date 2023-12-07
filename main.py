@@ -258,10 +258,12 @@ def runCommand(cmd,withinLoop):
                     error("No Parameters!","Parameter")
                 else:
                     toRepeat=input(":> ")
-                    if areYouSure():
+                    if toRepeat[0].lower()!="c" and areYouSure():
                         for i in range(int(cmd[1:])):
                             runCommand(toRepeat,True)
                         print(f"Completed {int(cmd[1:])} Repeats of <{toRepeat}>!")
+                    elif toRepeat[0].lower()=="c":
+                        error("Cannot Nest Repeats!","Parameter")
                     else:
                         print(f"Cancelled {int(cmd[1:])} Repeats of <{toRepeat}>!")
             case "d":
