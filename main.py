@@ -115,7 +115,6 @@ def runCommand(cmd,withinLoop):
         match cmd[0].lower():
             case "1":
                 ancestors=[]
-                level=1
                 ghostLocation=location
                 ancestors.append(f"{tree[ghostLocation].name} [{ghostLocation}]")
                 while tree[ghostLocation].parent:
