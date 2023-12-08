@@ -26,12 +26,6 @@ class Branch:
         self.children = []
         self.parent = parentID
 
-    def addChild(self, childNode):
-        global tree
-        if childNode in tree.keys():
-            self.children.append(childNode)
-        else: error(f"{childNode} is not a Valid ID!","ID")
-
     def checkChildren(self):
         return {i+1:self.children[i] for i in range(len(self.children))}
     
@@ -48,14 +42,12 @@ class Branch:
         return descend
 
     def destroy(self):
-        if self.ID:
-            global tree
-            del tree[self.ID]
-            del self
+        global tree
+        del tree[self.ID]
+        del self
 
     def clone(self,newParent):
         global tree
-        keys = sorted(tree.keys())
         duplicateLocation = newBranch(newParent)
         tree[duplicateLocation].name=self.name
         tree[duplicateLocation].fileType=self.fileType
@@ -69,7 +61,7 @@ def newBranch(parentID):
     keys = sorted(tree.keys())
     newID = next((i for i,j in enumerate(keys,start=min(keys)) if i!= j), max(keys)+1)
     tree[newID]=Branch(newID,parentID)
-    tree[parentID].addChild(newID)
+    tree[parentID].children.append(newID)
     return newID
 
 tree[0]=Branch(0,None)
@@ -165,14 +157,19 @@ def runCommand(cmd,withinLoop):
             case "5":
                 if len(cmd)==1:
                     error("No Parameters!", "Parameter")
-                elif cmd[1]=="n" and location:
-                    tree[location].name=input("Enter File Name:\n:> ").removesuffix("\n")
-                    print(f"Successfully Changed File Name to {tree[location].name}")
-                elif cmd[1]=="t" and location:
-                    tree[location].fileType=input("Enter File Type:\n:> ").removesuffix("\n")
-                    print(f"Successfully Changed File Type to {tree[location].fileType}")
                 elif not location:
                     error("Cannot Edit Properties of Root Node!","Root")
+                elif cmd[1]=="n":
+                    tree[location].name=input("Enter File Name:\n:> ").removesuffix("\n")
+                    print(f"Successfully Changed File Name to {tree[location].name}")
+                elif cmd[1]=="t":
+                    toChangeTo=input("Enter File Type:\n:> ").removesuffix("\n")
+                    if toChangeTo=="000" and tree[location].fileType!="000":
+                        print("Changing This File's Type to Null Will Remove All Data. Are You Sure?")
+                        if not areYouSure():
+                            return
+                    tree[location].fileType=toChangeTo
+                    print(f"Successfully Changed File Type to {tree[location].fileType}")
                 else:
                     error(f"Unknown Property {cmd[1]}!","Parameter")
             case "6": 
@@ -186,8 +183,7 @@ def runCommand(cmd,withinLoop):
                         descendants=tree[location].descendants()
                         tree[tree[location].parent].children.remove(location)
                         while descendants:
-                            location=descendants[0]
-                            tree[location].destroy()
+                            tree[descendants[0]].destroy()
                             descendants.pop(0)
                         location=ghostLocation
                         print("Deletion Successful!")
