@@ -42,10 +42,9 @@ class Branch:
         return descend
 
     def destroy(self):
-        if self.ID:
-            global tree
-            del tree[self.ID]
-            del self
+        global tree
+        del tree[self.ID]
+        del self
 
     def clone(self,newParent):
         global tree
@@ -165,7 +164,12 @@ def runCommand(cmd,withinLoop):
                     tree[location].name=input("Enter File Name:\n:> ").removesuffix("\n")
                     print(f"Successfully Changed File Name to {tree[location].name}")
                 elif cmd[1]=="t":
-                    tree[location].fileType=input("Enter File Type:\n:> ").removesuffix("\n")
+                    toChangeTo=input("Enter File Type:\n:> ").removesuffix("\n")
+                    if toChangeTo=="000" and tree[location].fileType!="000":
+                        print("Changing This File's Type to Null Will Remove All Data. Are You Sure?")
+                        if not areYouSure():
+                            return
+                    tree[location].fileType=toChangeTo
                     print(f"Successfully Changed File Type to {tree[location].fileType}")
                 else:
                     error(f"Unknown Property {cmd[1]}!","Parameter")
