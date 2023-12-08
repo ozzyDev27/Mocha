@@ -181,8 +181,7 @@ def runCommand(cmd,withinLoop):
                         descendants=tree[location].descendants()
                         tree[tree[location].parent].children.remove(location)
                         while descendants:
-                            location=descendants[0]
-                            tree[location].destroy()
+                            tree[descendants[0]].destroy()
                             descendants.pop(0)
                         location=ghostLocation
                         print("Deletion Successful!")
