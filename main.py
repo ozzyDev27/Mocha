@@ -49,7 +49,6 @@ class Branch:
 
     def clone(self,newParent):
         global tree
-        keys = sorted(tree.keys())
         duplicateLocation = newBranch(newParent)
         tree[duplicateLocation].name=self.name
         tree[duplicateLocation].fileType=self.fileType
