@@ -72,6 +72,7 @@ def safetyCheck():
     for i in tree.values():
         i.parent=0 if i.parent==i.ID or i.parent not in tree.keys() else i.parent #? checks for unknown parents or self-parenting
         i.children=[j for j in i.children if j in tree.keys() and j!=i.ID]  #? checks for unknown children and self-childrening
+        i.data="" if i.fileType=="000" else i.data
     if location not in tree.keys():
         location=0
 
@@ -169,6 +170,7 @@ def runCommand(cmd,withinLoop):
                         if not areYouSure():
                             return
                     tree[location].fileType=toChangeTo
+                    tree[location].data=""
                     print(f"Successfully Changed File Type to {tree[location].fileType}")
                 else:
                     error(f"Unknown Property {cmd[1]}!","Parameter")
