@@ -73,6 +73,8 @@ def safetyCheck():
         i.parent=0 if i.parent==i.ID or i.parent not in tree.keys() else i.parent #? checks for unknown parents or self-parenting
         i.children=[j for j in i.children if j in tree.keys() and j!=i.ID]  #? checks for unknown children and self-childrening
         i.data="" if i.fileType=="000" else i.data
+    for i in tree:
+        tree[i].ID=i
     if location not in tree.keys():
         location=0
 
