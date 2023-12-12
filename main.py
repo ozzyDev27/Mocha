@@ -270,7 +270,7 @@ def runCommand(cmd,withinLoop):
                         print(''.join(open("commands/help","r").readlines()[int(i):int(j)]))
                     else: error("Unknown Command!","Parameter")
                 else: print(''.join(open("commands/help","r").readlines()[17:33]))
-
-while running and __name__=="__main__":
-    runCommand(input("> "),False)
-print("Goodbye!")
+if __name__=="__main__":
+    while running:
+        runCommand(input("> "),False)
+    print("Goodbye!")
