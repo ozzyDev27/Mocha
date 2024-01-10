@@ -1,6 +1,8 @@
 import re
 from math import floor, ceil
-def repVar(check):return re.sub(r'(?<=~)\w+(?=~)', lambda x: var[x.group(0)], check).replace("~", "")
+
+
+def repVar(check):return re.sub(r'~(.*?)~', lambda match: str(vars[match.group(1)]), check)
 def num(n):
 	try:return int(n) 
 	except:
@@ -9,6 +11,7 @@ def num(n):
 def runSnak(code):
 	lines=code.split("\n")
 	line=0
+	global vars
 	vars={}
 	while line<len(lines):
 		parts=lines[line].split(" ")
@@ -57,12 +60,12 @@ def runSnak(code):
 								case "get":vars[parts[1]]=vars[parts[4]][int(parts[5])]
 								case "app":vars[parts[1]].append([repVar(i) for i in parts[4:]])
 								case "del":vars[parts[1]].pop(num(repVar(parts[4])))
-								case "ins":vars[parts[1]].insert(num(repVar(parts[4])),[repVar(i) for i in parts[5:]]))
+								case "ins":vars[parts[1]].insert(num(repVar(parts[4])),[repVar(i) for i in parts[5:]])
 								case "len":vars[parts[1]]=len(vars[parts[4]])
 				case _:
 					pass
 		line+=1
-testing=0
+testing=1
 if testing:
 	with open("test", "r") as f:
 		runSnak(f.read())
