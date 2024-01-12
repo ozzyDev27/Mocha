@@ -68,9 +68,6 @@ def runSnak(code):
 				case _:
 					pass
 		line+=1
-testing=1
-if testing:
+if  __name__ == "__main__":	
 	with open("test", "r") as f:
 		runSnak(f.read())
-else:
-	print(0 == "0")
