@@ -184,11 +184,15 @@ def runCommand(cmd,withinLoop):
                         pass #within window
                     case "2":
                         pass #in terminal
+                        match cmd[2].lower():
+                            case "1":
+                                print(tree[location].data)
+                            case "2":
+                                tree[location].data.append(input(":>"))
                     case "3":
                         match tree[location].fileType:
                             case "snk":
                                 runSnak(tree[location].data)
-                            
                             case _:
                                 print(tree[location].data)
             case "7":
@@ -275,7 +279,17 @@ def runCommand(cmd,withinLoop):
                 else:
                     print("Cancelled Exiting Mocha!")
             case "z": #? debug cmd
-                tree[location].data="txt Hello world"
+                tree[location].data="""
+                txt Hello world
+                var repeat num set 3
+                cmd 321
+                var repeat num sub ~repeat~ 1
+                jnz 2 != ~repeat~ 0
+                cmd 1
+                cmd 7
+                cmd 321
+                cmd 1
+                """
             case _: #? Commands / Help Menu
                 if len(cmd)>1 and cmd.startswith("0") and cmd[1].upper() in "0123456789ABCDEF":
                     if int(cmd[1],16) in range(16):
