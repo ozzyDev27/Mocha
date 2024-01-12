@@ -6,6 +6,7 @@ import string
 from tkinter import *
 from pathlib import Path
 import pickle
+from snak.snak import runSnak
 # ----------------------------------- Setup ---------------------------------- #
 location=0 #would be a node ID - 0 is the root node's ID
 tree={} #all instances with nodeIDs as keys
@@ -177,7 +178,19 @@ def runCommand(cmd,withinLoop):
                 else:
                     error(f"Unknown Property {cmd[1]}!","Parameter")
             case "6": 
-                openFile(tree[location])
+                match cmd[1].lower():
+                    case "1":
+                        openFile(tree[location])
+                        pass #within window
+                    case "2":
+                        pass #in terminal
+                    case "3":
+                        match tree[location].fileType:
+                            case "snk":
+                                runSnak(tree[location].data)
+                            
+                            case _:
+                                print(tree[location].data)
             case "7":
                 print(f"Successfully Created a Branch With Node ID [{newBranch(location)}]!")
             case "8":
@@ -262,7 +275,7 @@ def runCommand(cmd,withinLoop):
                 else:
                     print("Cancelled Exiting Mocha!")
             case "z": #? debug cmd
-                safetyCheck()
+                tree[location].data="txt Hello world"
             case _: #? Commands / Help Menu
                 if len(cmd)>1 and cmd.startswith("0") and cmd[1].upper() in "0123456789ABCDEF":
                     if int(cmd[1],16) in range(16):
