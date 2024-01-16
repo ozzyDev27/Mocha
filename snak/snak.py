@@ -11,7 +11,7 @@ def num(n):
 def runSnak(code):
 	lines=code.split("\n")
 	line=0
-	global vars, labels, cache
+	global vars, labels,cache
 	cache=[]
 	vars={}
 	while line<len(lines):
@@ -21,7 +21,7 @@ def runSnak(code):
 				case "txt":
 					print(' '.join([repVar(i) for i in parts[1:]]))
 				case "cmd":
-					cache.append(parts[1])
+					cache.append(parts[1:])
 				case "jmp":
 					line=int(repVar(parts[1]))-2
 				case "jnz":
@@ -33,12 +33,12 @@ def runSnak(code):
 							match parts[3]:
 								case "==":vars[parts[1]]=str(repVar(parts[4]))==str(repVar(parts[5]))
 								case "!=":vars[parts[1]]=str(repVar(parts[4]))!=str(repVar(parts[5]))
-								case ">=":vars[parts[1]]=repVar(parts[4])>=repVar(parts[5])
-								case "<=":vars[parts[1]]=repVar(parts[4])<=repVar(parts[5])
-								case ">":vars[parts[1]]=repVar(parts[4])>repVar(parts[5])
-								case "<":vars[parts[1]]=repVar(parts[4])<repVar(parts[5])
+								case ">=":vars[parts[1]]=num(repVar(parts[4]))>=num(repVar(parts[5]))
+								case "<=":vars[parts[1]]=num(repVar(parts[4]))<=num(repVar(parts[5]))
+								case ">":vars[parts[1]]=num(repVar(parts[4]))>num(repVar(parts[5]))
+								case "<":vars[parts[1]]=num(repVar(parts[4]))<num(repVar(parts[5]))
 								case "&":vars[parts[1]]=repVar(parts[4])&repVar(parts[5])
-								case "!":vars[parts[1]]=~repVar(parts[4])
+								case "!":vars[parts[1]]=not repVar(parts[4])
 								case "^":vars[parts[1]]=repVar(parts[4])^repVar(parts[5])
 								case "|":vars[parts[1]]=repVar(parts[4])|repVar(parts[5])
 						case "num":
@@ -54,6 +54,7 @@ def runSnak(code):
 								case "flr":vars[parts[1]]=floor(num(repVar(parts[4])))
 								case "cil":vars[parts[1]]=ceil(num(repVar(parts[4])))
 								case "abs":vars[parts[1]]=abs(num(repVar(parts[4])))
+								case "len":vars[parts[1]]=len(repVar(parts[4]))
 						case "str":vars[parts[1]]=' '.join([repVar(i) for i in parts[3:]])
 						case "cpy":vars[parts[1]]=vars[parts[3]]
 						case "lst":
@@ -64,11 +65,17 @@ def runSnak(code):
 								case "del":vars[parts[1]].pop(num(repVar(parts[4])))
 								case "ins":vars[parts[1]].insert(num(repVar(parts[4])),[repVar(i) for i in parts[5:]])
 								case "len":vars[parts[1]]=len(vars[parts[4]])
+						case "idx":
+							vars[parts[1]]=repVar(parts[4])[repVar(parts[5])]
 				case "end":
 					line=len(lines)
 				case _:
 					pass
 		line+=1
-if  __name__ == "__main__":	
-	with open("test", "r") as f:
-		runSnak(f.read())
+testing=1
+if __name__=="__main__":
+	if testing:
+		with open("test", "r") as f:
+			runSnak(f.read())
+	else:
+		print(~True)
