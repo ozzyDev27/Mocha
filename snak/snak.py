@@ -11,7 +11,8 @@ def num(n):
 def runSnak(code):
 	lines=code.split("\n")
 	line=0
-	global vars, labels
+	global vars, labels, cache
+	cache=[]
 	vars={}
 	while line<len(lines):
 		parts=lines[line].split(" ")
@@ -20,7 +21,7 @@ def runSnak(code):
 				case "txt":
 					print(' '.join([repVar(i) for i in parts[1:]]))
 				case "cmd":
-					pass #runCommand(parts[1],True)
+					cache.append(parts[1])
 				case "jmp":
 					line=int(repVar(parts[1]))-2
 				case "jnz":
