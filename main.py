@@ -193,6 +193,8 @@ def runCommand(cmd,withinLoop):
                         match tree[location].fileType:
                             case "snk":
                                 runSnak(tree[location].data)
+                                for i in cache:
+                                    runCommand(i,True)
                             case _:
                                 print(tree[location].data)
             case "7":
