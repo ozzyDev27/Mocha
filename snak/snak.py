@@ -54,8 +54,11 @@ def runSnak(code):
 								case "flr":vars[parts[1]]=floor(num(repVar(parts[4])))
 								case "cil":vars[parts[1]]=ceil(num(repVar(parts[4])))
 								case "abs":vars[parts[1]]=abs(num(repVar(parts[4])))
+						case "str":
+							match parts[3]:
+								case "set":vars[parts[1]]=' '.join([repVar(i) for i in parts[4:]])
+								case "idx":vars[parts[1]]=repVar(parts[4])[int(repVar(parts[5]))]
 								case "len":vars[parts[1]]=len(repVar(parts[4]))
-						case "str":vars[parts[1]]=' '.join([repVar(i) for i in parts[3:]])
 						case "cpy":vars[parts[1]]=vars[parts[3]]
 						case "lst":
 							match parts[3]:
@@ -65,8 +68,8 @@ def runSnak(code):
 								case "del":vars[parts[1]].pop(num(repVar(parts[4])))
 								case "ins":vars[parts[1]].insert(num(repVar(parts[4])),[repVar(i) for i in parts[5:]])
 								case "len":vars[parts[1]]=len(vars[parts[4]])
-						case "idx":
-							vars[parts[1]]=repVar(parts[3])[int(repVar(parts[4]))]
+						case "inp":
+							vars[parts[1]]=input(' '.join([repVar(i) for i in parts[2:]]))
 				case "end":
 					line=len(lines)
 				case _:
