@@ -1,7 +1,5 @@
 import re
 from math import floor, ceil
-
-
 def repVar(check):return re.sub(r'~(.*?)~', lambda match: str(vars[match.group(1)]), check)
 def num(n):
 	try:return int(n) 
@@ -31,25 +29,25 @@ def runSnak(code):
 					match parts[2]:
 						case "bln":
 							match parts[3]:
-								case "==":vars[parts[1]]=str(repVar(parts[4]))==str(repVar(parts[5]))
-								case "!=":vars[parts[1]]=str(repVar(parts[4]))!=str(repVar(parts[5]))
-								case ">=":vars[parts[1]]=num(repVar(parts[4]))>=num(repVar(parts[5]))
-								case "<=":vars[parts[1]]=num(repVar(parts[4]))<=num(repVar(parts[5]))
-								case ">":vars[parts[1]]=num(repVar(parts[4]))>num(repVar(parts[5]))
-								case "<":vars[parts[1]]=num(repVar(parts[4]))<num(repVar(parts[5]))
-								case "&":vars[parts[1]]=repVar(parts[4])&repVar(parts[5])
-								case "!":vars[parts[1]]=not repVar(parts[4])
-								case "^":vars[parts[1]]=repVar(parts[4])^repVar(parts[5])
-								case "|":vars[parts[1]]=repVar(parts[4])|repVar(parts[5])
+								case ["==","eql"]:vars[parts[1]]=str(repVar(parts[4]))==str(repVar(parts[5]))
+								case "[!=","nql"]:vars[parts[1]]=str(repVar(parts[4]))!=str(repVar(parts[5]))
+								case "[>=","gre"]:vars[parts[1]]=num(repVar(parts[4]))>=num(repVar(parts[5]))
+								case ["<=","lse"]:vars[parts[1]]=num(repVar(parts[4]))<=num(repVar(parts[5]))
+								case [">","grt"]:vars[parts[1]]=num(repVar(parts[4]))>num(repVar(parts[5]))
+								case ["<","les"]:vars[parts[1]]=num(repVar(parts[4]))<num(repVar(parts[5]))
+								case ["&","and"]:vars[parts[1]]=repVar(parts[4])&repVar(parts[5])
+								case ["!","not"]:vars[parts[1]]=not repVar(parts[4])
+								case ["^","xor"]:vars[parts[1]]=repVar(parts[4])^repVar(parts[5])
+								case ["|","orr"]:vars[parts[1]]=repVar(parts[4])|repVar(parts[5])
 						case "num":
 							match parts[3]:
 								case "set":vars[parts[1]]=int(parts[4])
-								case "add":vars[parts[1]]=num(num(repVar(parts[4]))+num(repVar(parts[5])))
-								case "sub":vars[parts[1]]=num(num(repVar(parts[4]))-num(repVar(parts[5])))
-								case "mlt":vars[parts[1]]=num(num(repVar(parts[4]))*num(repVar(parts[5])))
-								case "div":vars[parts[1]]=num(num(repVar(parts[4]))/num(repVar(parts[5])))
-								case "mod":vars[parts[1]]=num(num(repVar(parts[4]))%num(repVar(parts[5])))
-								case "exp":vars[parts[1]]=num(num(repVar(parts[4]))**num(repVar(parts[5])))
+								case ["add","+"]:vars[parts[1]]=num(num(repVar(parts[4]))+num(repVar(parts[5])))
+								case ["sub","-"]:vars[parts[1]]=num(num(repVar(parts[4]))-num(repVar(parts[5])))
+								case ["mlt","*"]:vars[parts[1]]=num(num(repVar(parts[4]))*num(repVar(parts[5])))
+								case ["div","/"]:vars[parts[1]]=num(num(repVar(parts[4]))/num(repVar(parts[5])))
+								case ["mod","%"]:vars[parts[1]]=num(num(repVar(parts[4]))%num(repVar(parts[5])))
+								case ["exp","^"]:vars[parts[1]]=num(num(repVar(parts[4]))**num(repVar(parts[5])))
 								case "rnd":vars[parts[1]]=round(num(repVar(parts[4])))
 								case "flr":vars[parts[1]]=floor(num(repVar(parts[4])))
 								case "cil":vars[parts[1]]=ceil(num(repVar(parts[4])))
