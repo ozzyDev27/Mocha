@@ -66,7 +66,7 @@ def runSnak(code):
 								case "ins":vars[parts[1]].insert(num(repVar(parts[4])),[repVar(i) for i in parts[5:]])
 								case "len":vars[parts[1]]=len(vars[parts[4]])
 						case "idx":
-							vars[parts[1]]=repVar(parts[4])[repVar(parts[5])]
+							vars[parts[1]]=repVar(parts[3])[int(repVar(parts[4]))]
 				case "end":
 					line=len(lines)
 				case _:
