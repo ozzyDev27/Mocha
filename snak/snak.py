@@ -30,8 +30,8 @@ def runSnak(code):
 						case "bln":
 							match parts[3]:
 								case ["==","eql"]:vars[parts[1]]=str(repVar(parts[4]))==str(repVar(parts[5]))
-								case "[!=","nql"]:vars[parts[1]]=str(repVar(parts[4]))!=str(repVar(parts[5]))
-								case "[>=","gre"]:vars[parts[1]]=num(repVar(parts[4]))>=num(repVar(parts[5]))
+								case ["!=","nql"]:vars[parts[1]]=str(repVar(parts[4]))!=str(repVar(parts[5]))
+								case [">=","gre"]:vars[parts[1]]=num(repVar(parts[4]))>=num(repVar(parts[5]))
 								case ["<=","lse"]:vars[parts[1]]=num(repVar(parts[4]))<=num(repVar(parts[5]))
 								case [">","grt"]:vars[parts[1]]=num(repVar(parts[4]))>num(repVar(parts[5]))
 								case ["<","les"]:vars[parts[1]]=num(repVar(parts[4]))<num(repVar(parts[5]))

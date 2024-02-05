@@ -10,6 +10,7 @@ from snak.snak import runSnak
 # ----------------------------------- Setup ---------------------------------- #
 location=0 #would be a node ID - 0 is the root node's ID
 tree={} #all instances with nodeIDs as keys
+clipboard=None
 running=True
 with open('commands/properties', 'r') as file:types={end.split("-")[0]:end.split("-")[2].strip() for end in file.readlines()}
 
@@ -53,9 +54,8 @@ class Branch:
         tree[duplicateLocation].name=self.name
         tree[duplicateLocation].fileType=self.fileType
         tree[duplicateLocation].data=self.data
-        if len(self.children):
-            for i in self.children:
-                tree[i].clone(duplicateLocation)
+        for i in self.children:
+            tree[i].clone(duplicateLocation)
 
 def newBranch(parentID):
     global tree
@@ -106,7 +106,7 @@ def openFile(file):
 
 # ------------------------------------ Loop ----------------------------------- #
 def runCommand(cmd,withinLoop):
-    global tree,location
+    global tree,location,clipboard
     if len(cmd):
         match cmd[0].lower():
             case "1":
@@ -230,7 +230,7 @@ def runCommand(cmd,withinLoop):
                     else:
                         error(f"Node ID [{int(cmd[1:])}] Doesn't Exist!","Parameter")
                 except ValueError: error(f"[{cmd[1:]}] is not a Valid Node ID!","Parameter")
-            case "a":
+            case "a (duplicate, no longer used)":
                 if location:
                     try:
                         if cmd[1]=="1":
@@ -248,6 +248,10 @@ def runCommand(cmd,withinLoop):
                         error("No Parameters!","Parameter")
                 else:
                     error("Cannot Duplicate Root!","Root")
+            case "a":
+                match cmd[1]:
+                    case "1":
+                        pass
             case "b":
                 os.system('cls' if os.name=='nt' else 'clear')
             case "c":
