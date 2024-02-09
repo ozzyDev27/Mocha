@@ -6,7 +6,7 @@ import string
 from tkinter import *
 from pathlib import Path
 import pickle
-from snak.snak import runSnak
+from snak.snak import Snak
 # ----------------------------------- Setup ---------------------------------- #
 location=0 #would be a node ID - 0 is the root node's ID
 tree={} #all instances with nodeIDs as keys
@@ -192,9 +192,11 @@ def runCommand(cmd,withinLoop):
                     case "3":
                         match tree[location].fileType:
                             case "snk":
-                                runSnak(tree[location].data)
-                                for i in cache:
+                                #//print([tree[location].data])
+                                runSnak=Snak(tree[location].data)
+                                for i in runSnak.cache:
                                     runCommand(i,True)
+                                del runSnak
                             case _:
                                 print(tree[location].data)
             case "7":
@@ -285,17 +287,17 @@ def runCommand(cmd,withinLoop):
                 else:
                     print("Cancelled Exiting Mocha!")
             case "z": #? debug cmd
-                tree[location].data="""
-                txt Hello world
-                var repeat num set 3
-                cmd 321
-                var repeat num sub ~repeat~ 1
-                jnz 2 != ~repeat~ 0
-                cmd 1
-                cmd 7
-                cmd 321
-                cmd 1
-                """
+                tree[location].data="""txt Hello world
+var repeat num set 3
+cmd 321
+var repeat num sub ~repeat~ 1
+txt ~repeat~
+var goBack bln > ~repeat~ 0
+jnz 4 goBack
+cmd 1
+cmd 7
+cmd 321
+cmd 1"""
             case _: #? Commands / Help Menu
                 if len(cmd)>1 and cmd.startswith("0") and cmd[1].upper() in "0123456789ABCDEF":
                     if int(cmd[1],16) in range(16):
