@@ -194,8 +194,11 @@ def runCommand(cmd,withinLoop):
                             case "snk":
                                 #//print([tree[location].data])
                                 runSnak=Snak(tree[location].data)
-                                for i in runSnak.cache:
-                                    runCommand(i,True)
+                                print([runSnak.lines,len(runSnak.lines)])
+                                for i in runSnak.lines:
+                                    runSnak.runLine()
+                                    if runSnak.cache:
+                                        runCommand(runSnak.cache,True)
                                 del runSnak
                             case _:
                                 print(tree[location].data)
@@ -292,12 +295,15 @@ var repeat num set 3
 cmd 321
 var repeat num sub ~repeat~ 1
 txt ~repeat~
-var goBack bln > ~repeat~ 0
-jnz 4 goBack
+var goBack bln grt ~repeat~ 0
+txt debug
+jnz 3 goBack
+txt test
 cmd 1
 cmd 7
 cmd 321
 cmd 1"""
+                #tree[location].data="cmd 1"
             case _: #? Commands / Help Menu
                 if len(cmd)>1 and cmd.startswith("0") and cmd[1].upper() in "0123456789ABCDEF":
                     if int(cmd[1],16) in range(16):
