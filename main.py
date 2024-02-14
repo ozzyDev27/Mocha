@@ -3,10 +3,10 @@ import math
 import os
 import random
 import string
-from tkinter import *
 from pathlib import Path
 import pickle
 from snak.snak import Snak
+exec(f"from {'tkinter' if os.name=='nt' else 'tk'} import *") #?dont judge I just got linux on my laptop
 # ----------------------------------- Setup ---------------------------------- #
 location=0 #would be a node ID - 0 is the root node's ID
 tree={} #all instances with nodeIDs as keys
@@ -192,14 +192,13 @@ def runCommand(cmd,withinLoop):
                     case "3":
                         match tree[location].fileType:
                             case "snk":
-                                #//print([tree[location].data])
                                 runSnak=Snak(tree[location].data)
-                                print([runSnak.lines,len(runSnak.lines)])
-                                for i in runSnak.lines:
+                                #//print([runSnak.lines,len(runSnak.lines)])
+                                while runSnak.life:
                                     runSnak.runLine()
                                     if runSnak.cache:
                                         runCommand(runSnak.cache,True)
-                                del runSnak
+                                runSnak=None
                             case _:
                                 print(tree[location].data)
             case "7":
@@ -291,18 +290,17 @@ def runCommand(cmd,withinLoop):
                     print("Cancelled Exiting Mocha!")
             case "z": #? debug cmd
                 tree[location].data="""txt Hello world
-var repeat num set 3
+var repeat num set 2
 cmd 321
 var repeat num sub ~repeat~ 1
 txt ~repeat~
 var goBack bln grt ~repeat~ 0
-txt debug
 jnz 3 goBack
-txt test
 cmd 1
 cmd 7
 cmd 321
-cmd 1"""
+cmd 1
+end"""
                 #tree[location].data="cmd 1"
             case _: #? Commands / Help Menu
                 if len(cmd)>1 and cmd.startswith("0") and cmd[1].upper() in "0123456789ABCDEF":

@@ -4,6 +4,7 @@ class Snak:
 	def __init__(self,code):
 		self.lines=code.split("\n")
 		self.line=0
+		self.life=True
 		self.vars={}
 		self.cache=False
 	def num(self,n):
@@ -70,7 +71,7 @@ class Snak:
 						case "inp":
 							self.vars[parts[1]]=input(' '.join([self.repVar(i) for i in parts[2:]]))
 				case "end":
-					self.line=len(self.lines)
+					self.life=False
 				case _:
 					pass
 		self.line+=1
