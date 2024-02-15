@@ -18,11 +18,110 @@ txt Done!
 jmp 13
 txt This text isn't shown >:D
 txt Goodbye!
+end
 ```
+# Commands
 ## Comments
 Comments are any command that don't exist.  
 In the prior example, // is used, but you could use anything, or nothing at all!  
+It is best to use a standardized comment prefix, for readability. 
+## Text
+This command can be used for anything - a print statement, a debug message, or anything you can think of.  
+All you need to do is use the command `txt`, followed by your text.  
+If you wrap a word with a `~`, it will print the variable.  
+For example, if the variable `name` is set to "`John Smith`", the line
+```
+txt Hello, my name is ~name~!
+```
+would return `Hello, my name is John Smith!`.
+## Command
+This is the purpose of Snak - to integrate with Mocha.  
+The command for the command command is `cmd`.  
+I now notice this may not make all too much sense.  
+The command command (`cmd`) simply runs a Mocha command.  
+For example:   
+```
+cmd 31
+```
+runs the command `31`, which moves you up.
 ## Jumping
 Snak doesn't make use of functions, and instead uses jumping.  
 You can jump to any line, and use `jnz` to make an if statement.  
-TODO: FINISH THIS
+To jump, you just use the `jmp` command, followed by the line you want to jump to.  
+You can also use a num variable, which could be used as a "bookmark" of sorts.  
+For example:
+```
+var line num set 27
+jmp ~line~
+```
+would jump to line 27.  
+The `jnz` command works the same, but you must add a boolean variable to the end. If it is true, it will jump, but if it isn't, it just goes to the next line.  
+You are required to use a variable, as it has no comprehension.
+For example:
+```
+var test bln >= ~iq~ 100
+jnz 27 ~test~
+```
+would jump to line 27 if the variable `iq` is greater or equal to 100.
+## Variables
+Variables are the backbone of Snak, needed to perform practically every function.  
+Because of this, the variable command is rather extensive.  
+The formatting for the variable command is as follows:
+```
+var Name str set John Smith
+```
+### Boolean
+A boolean variable may be the most basic one there is, just having logic operators.  
+The logic operators are as follows:
+`==` or `eql` is equal, checking if two variables are the same.  
+`!=` or `nql` is not equal, checking if two variables are not the same.  
+`>` or `grt` is greater than, checking if a variable is greater than another.  
+`<` or `les` is less than, checking if a variable is less than another.  
+`>=` or `gre` is greater or equal to, checking if a variable is greater or equal to another.  
+`<=` or `lse` is less or equal to, checking if a variable is less or equal to another.  
+`&` or `and` is an and gate, checking if two variables are both true.  
+`!` or `not` is a not gate, checking if a variable is false.  
+`^` or `xor` is an exclusive or gate, checking if only one of the variables is true.  
+`|` or `orr` is an or gate, checking if at least one of the variables is true.  
+Here are a few examples of the boolean variable:
+```
+var logIn bln == ~enteredPassword~ ~correctPassword~
+var isCool bln nql ~username~ Ultrablob
+var smart bln > ~iq~ 100
+var newHighScore bln >= ~score~ ~highScore~
+var lowHealth bln < ~HP~ 10
+var gameOver bln <= ~HP~ 0
+var openDoor bln & ~attemptingToOpenDoor~ ~hasKey~
+var alwaysTrue bln not 0
+var qualified bln orr ~hasCollegeDegree~ ~hasUniversityDegree~
+var cantThinkOfAnExample bln xor ~hmmm~ ~whatToPut~
+```
+### Numbers
+Numbers are pretty important in programming, and this wouldn't be a real language without them.  
+Similar to booleans, the number variable is rather extensive.  
+`set` just sets the variable to the number you put.  
+`add` or `+` adds two numbers together.  
+`sub` or `-` subtracts two numbers.  
+`mlt` or `*` multiplies two numbers.  
+`div` or `/` divides two numbers.  
+`mod` or `%` gets the modulus n of a number.  
+`exp` or `^` gets the exponent n of a number.  
+`rnd` rounds a number to its nearest whole.  
+`flr` rounds a number down to its nearest whole.  
+`cil` rounds a number up to its nearest whole.  
+`abs` gets the absolute of a number.
+Here are some examples:
+```
+var HP num set 100
+var getAreaOfCircle num exp ~radius~ 2
+var getAreaofCircle num mlt ~getAreaOfCircle~ 3.14159
+var direction num mod ~angle~ 360
+var externalHappiness num abs ~mentalHealthState~
+var yeahIRanOutOfExamplesAgain num flr 5.9
+```
+### Strings
+Guess what.  
+Strings are pretty important.  
+I will do the rest of this documentation later because I gotta go.  
+Goodbye world.  
+You weren't even that good.
