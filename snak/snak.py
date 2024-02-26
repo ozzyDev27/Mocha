@@ -1,5 +1,6 @@
 import re
 from math import floor, ceil
+from time import sleep
 class Snak:
 	def __init__(self,code):
 		self.lines=code.split("\n")
@@ -15,6 +16,7 @@ class Snak:
 	def repVar(self,check):return re.sub(r'~(.*?)~', lambda match: str(self.vars[match.group(1)]), check)
 	def runLine(self):
 		self.cache=False
+		#//print([self.lines,self.line])
 		if self.lines[self.line].strip():
 			parts=self.lines[self.line].split(" ")
 			match parts[0]:
@@ -27,6 +29,8 @@ class Snak:
 				case "jnz":
 					if self.vars[parts[2]]:
 						self.line=int(parts[1])-2
+				case "slp":
+					sleep(int(parts[1])/100)
 				case "var":
 					match parts[2]:
 						case "bln":

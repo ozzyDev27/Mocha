@@ -122,6 +122,80 @@ var yeahIRanOutOfExamplesAgain num flr 5.9
 ### Strings
 Guess what.  
 Strings are pretty important.  
-I will do the rest of this documentation later because I gotta go.  
-Goodbye world.  
-You weren't even that good.
+The string type has extremely basic syntax, and is practically the same as the txt command.  
+For example:
+```
+var name str John Doe
+```
+would set the variable `name` to `John Doe`.
+
+### List
+*Although there are other list-related commands, such as `len`, they aren't a part of the list variable command, as they could be used for things such as strings.*  
+The list variable type has a number of sub commands.  
+#### New
+Creates a new, blank list.
+```
+var myList lst new
+```
+#### Append
+Appends an item to the end of a list
+```
+var myList lst app hello world, my name is ~name~!
+```
+#### Delete
+Deletes the Nth item from the list.
+```
+var myList lst del 0
+```
+
+#### Insert
+Inserts an item into the Nth position
+```
+var myList lst ins 5 hello world
+```
+### Miscellaneous
+These are the variable types that don't deserve their own section.
+
+#### Length
+Gets the length of a variable, be it a string, list, or anything else.
+```
+var nameLength len ~name~
+var listLength len ~myList~
+```
+#### Index
+Gets an item from a specific index of a string, list, or anything else.  
+```
+var 4thLetter idx 4 ~word~
+var 7thItem idx 7 ~myList~
+```
+#### Copy
+Duplicates a variable.  
+```
+var theSameName cpy ~name~
+```
+#### Input
+Gets an input from the user.
+```
+var name inp What is your name? > 
+```
+
+## End
+End is *extremely* important.  
+If the program reaches the final line without the end command, it will self destruct.  
+If the program never reaches the end however, for example
+```
+txt hello
+jmp 1
+```
+You do not need to use the end command.  
+You may also use the command at any time, ending the program anywhere.  
+## Sleep
+The sleep command is purely used for timing.  
+For example:
+```
+txt Hello,
+slp 150
+txt World!
+end
+```
+would print "Hello,", wait for 1.5 seconds, and thne print "World!".

@@ -48,7 +48,7 @@ class Branch:
         del tree[self.ID]
         del self
 
-    def clone(self,newParent):
+    def clone(self,newParent): #! NO LONGER USED!!
         global tree
         duplicateLocation = newBranch(newParent)
         tree[duplicateLocation].name=self.name
@@ -56,6 +56,16 @@ class Branch:
         tree[duplicateLocation].data=self.data
         for i in self.children:
             tree[i].clone(duplicateLocation)
+    
+    def getClipboardData(self,getChildren):
+        global tree
+        return {
+            "ID":self.ID,
+            "name":self.name,
+            "fileType": self.fileType,
+            "data":self.data,
+            "children":[tree[child].getClipboardData() for child in self.children] if getChildren else "twelve"
+        }
 
 def newBranch(parentID):
     global tree
@@ -65,8 +75,18 @@ def newBranch(parentID):
     tree[parentID].children.append(newID)
     return newID
 
+def paste(parent,data):
+    global tree
+    newNode=newBranch(parent)
+    newNode.name=clipboard["name"]
+    newNode.ID=clipboard["ID"]
+    newNode.fileType=clipboard["fileType"]
+    newNode.data=clipboard["data"]
+    for child in clipboard["children"]:paste(clipboard["ID"],child)
+
 tree[0]=Branch(0,None)
 tree[0].name="root"
+clipboard=None
 
 def safetyCheck():
     global tree,location
@@ -82,6 +102,7 @@ def safetyCheck():
 def areYouSure():
     chars=''.join(random.choice(string.ascii_letters) for i in range(3))
     return input(f"Type in the following text: [{chars.upper()}]\n:> ").lower()==chars.lower()
+
 
 #test setups            0
 location=2   #          |
@@ -255,7 +276,17 @@ def runCommand(cmd,withinLoop):
             case "a":
                 match cmd[1]:
                     case "1":
-                        pass
+                        clipboard=tree[location].getClipboardData(cmd[2]=="2")
+                    case "2":
+                        if clipboard:
+                            if clipboard.children=="twelve":
+                                child=newBranch(location)
+                                child.name=clipboard["name"]
+                                child.ID=clipboard["ID"]
+                                child.fileType=clipboard["fileType"]
+                                child.data=clipboard["data"]
+                            else:
+                                paste(location,clipboard)
             case "b":
                 os.system('cls' if os.name=='nt' else 'clear')
             case "c":
@@ -289,18 +320,12 @@ def runCommand(cmd,withinLoop):
                 else:
                     print("Cancelled Exiting Mocha!")
             case "z": #? debug cmd
-                tree[location].data="""txt Hello world
-var repeat num set 2
-cmd 321
-var repeat num sub ~repeat~ 1
-txt ~repeat~
-var goBack bln grt ~repeat~ 0
-jnz 3 goBack
-cmd 1
-cmd 7
-cmd 321
-cmd 1
-end"""
+                tree[location].data="""var test num set 0
+var test num add ~test~ 1
+txt ~test~
+slp 100
+jmp 2""" 
+                print(tree[location].getClipboardData())
                 #tree[location].data="cmd 1"
             case _: #? Commands / Help Menu
                 if len(cmd)>1 and cmd.startswith("0") and cmd[1].upper() in "0123456789ABCDEF":
