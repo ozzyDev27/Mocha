@@ -8,8 +8,8 @@ import pickle
 from snak.snak import Snak
 exec(f"from {'tkinter' if os.name=='nt' else 'tk'} import *") #?dont judge I just got linux on my laptop
 # ----------------------------------- Setup ---------------------------------- #
-location=0 #would be a node ID - 0 is the root node's ID
-tree={} #all instances with nodeIDs as keys
+location=0
+tree={}
 clipboard=None
 running=True
 with open('commands/properties', 'r') as file:types={end.split("-")[0]:end.split("-")[2].strip() for end in file.readlines()}
@@ -47,15 +47,6 @@ class Branch:
         global tree
         del tree[self.ID]
         del self
-
-    def clone(self,newParent): #! NO LONGER USED!!
-        global tree
-        duplicateLocation = newBranch(newParent)
-        tree[duplicateLocation].name=self.name
-        tree[duplicateLocation].fileType=self.fileType
-        tree[duplicateLocation].data=self.data
-        for i in self.children:
-            tree[i].clone(duplicateLocation)
     
     def getClipboardData(self,getChildren):
         global tree
@@ -64,7 +55,7 @@ class Branch:
             "name":self.name,
             "fileType": self.fileType,
             "data":self.data,
-            "children":[tree[child].getClipboardData() for child in self.children] if getChildren else "twelve"
+            "children":[tree[child].getClipboardData() for child in self.children]
         }
 
 def newBranch(parentID):
@@ -78,11 +69,11 @@ def newBranch(parentID):
 def paste(parent,data):
     global tree
     newNode=newBranch(parent)
-    newNode.name=clipboard["name"]
-    newNode.ID=clipboard["ID"]
-    newNode.fileType=clipboard["fileType"]
-    newNode.data=clipboard["data"]
-    for child in clipboard["children"]:paste(clipboard["ID"],child)
+    newNode.name=data["name"]
+    newNode.ID=data["ID"]
+    newNode.fileType=data["fileType"]
+    newNode.data=data["data"]
+    for child in data["children"]:paste(data["ID"],child)
 
 tree[0]=Branch(0,None)
 tree[0].name="root"
@@ -255,31 +246,13 @@ def runCommand(cmd,withinLoop):
                     else:
                         error(f"Node ID [{int(cmd[1:])}] Doesn't Exist!","Parameter")
                 except ValueError: error(f"[{cmd[1:]}] is not a Valid Node ID!","Parameter")
-            case "a (duplicate, no longer used)":
-                if location:
-                    try:
-                        if cmd[1]=="1":
-                            tree[location].clone(tree[location].parent)
-                            print(f"Successfuly Cloned {tree[location].name} [{location}]")
-                        elif cmd[1]=="0":
-                            duplicateLocation = newBranch(newParent)
-                            tree[duplicateLocation].name=tree[location].name
-                            tree[duplicateLocation].fileType=tree[location].fileType
-                            tree[duplicateLocation].data=tree[location].data
-                            print(f"Successfuly Cloned {tree[location].name} [{location}]")
-                        else:
-                            error("Unknown Duplicate Type!", "Parameter")
-                    except IndexError:
-                        error("No Parameters!","Parameter")
-                else:
-                    error("Cannot Duplicate Root!","Root")
             case "a":
                 match cmd[1]:
                     case "1":
                         clipboard=tree[location].getClipboardData(cmd[2]=="2")
                     case "2":
                         if clipboard:
-                            if clipboard.children=="twelve":
+                            if clipboard.children:
                                 child=newBranch(location)
                                 child.name=clipboard["name"]
                                 child.ID=clipboard["ID"]
@@ -287,6 +260,8 @@ def runCommand(cmd,withinLoop):
                                 child.data=clipboard["data"]
                             else:
                                 paste(location,clipboard)
+                        else:
+                            error("No Clipboard Data!","Clipboard")
             case "b":
                 os.system('cls' if os.name=='nt' else 'clear')
             case "c":
