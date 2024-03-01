@@ -47,7 +47,7 @@ class Branch:
         global tree
         del tree[self.ID]
         del self
-    
+
     def getClipboardData(self,getChildren):
         global tree
         return {
@@ -55,7 +55,7 @@ class Branch:
             "name":self.name,
             "fileType": self.fileType,
             "data":self.data,
-            "children":[tree[child].getClipboardData() for child in self.children]
+            "children":[tree[child].getClipboardData(True) for child in self.children] if getChildren else False
         }
 
 def newBranch(parentID):
@@ -69,11 +69,11 @@ def newBranch(parentID):
 def paste(parent,data):
     global tree
     newNode=newBranch(parent)
-    newNode.name=data["name"]
-    newNode.ID=data["ID"]
-    newNode.fileType=data["fileType"]
-    newNode.data=data["data"]
-    for child in data["children"]:paste(data["ID"],child)
+    tree[newNode].name=data["name"]
+    tree[newNode].ID=data["ID"]
+    tree[newNode].fileType=data["fileType"]
+    tree[newNode].data=data["data"]
+    for child in data["children"]:paste(newNode,child)
 
 tree[0]=Branch(0,None)
 tree[0].name="root"
@@ -249,15 +249,17 @@ def runCommand(cmd,withinLoop):
             case "a":
                 match cmd[1]:
                     case "1":
-                        clipboard=tree[location].getClipboardData(cmd[2]=="2")
+                        if len(cmd)<3:
+                            error("Copy Type Not Provided", "Parameter")
+                        else:clipboard=tree[location].getClipboardData(cmd[2]=="2")
                     case "2":
                         if clipboard:
-                            if clipboard.children:
+                            if not clipboard["children"]:
                                 child=newBranch(location)
-                                child.name=clipboard["name"]
-                                child.ID=clipboard["ID"]
-                                child.fileType=clipboard["fileType"]
-                                child.data=clipboard["data"]
+                                tree[child].name=clipboard["name"]
+                                tree[child].ID=clipboard["ID"]
+                                tree[child].fileType=clipboard["fileType"]
+                                tree[child].data=clipboard["data"]
                             else:
                                 paste(location,clipboard)
                         else:
@@ -295,13 +297,15 @@ def runCommand(cmd,withinLoop):
                 else:
                     print("Cancelled Exiting Mocha!")
             case "z": #? debug cmd
-                tree[location].data="""var test num set 0
+                match cmd[1]:
+                    case "1":
+                        tree[location].data="""var test num set 0
 var test num add ~test~ 1
 txt ~test~
 slp 100
 jmp 2""" 
-                print(tree[location].getClipboardData())
-                #tree[location].data="cmd 1"
+                    case _:
+                        print(clipboard)
             case _: #? Commands / Help Menu
                 if len(cmd)>1 and cmd.startswith("0") and cmd[1].upper() in "0123456789ABCDEF":
                     if int(cmd[1],16) in range(16):
