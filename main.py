@@ -14,8 +14,10 @@ clipboard=None
 running=True
 with open('commands/properties', 'r') as file:types={end.split("-")[0]:end.split("-")[2].strip() for end in file.readlines()}
 
-def error(cmd,msg,errortype):
-    print(f"{errortype} Error: {msg}\nUse <0{cmd[0]}> for help!") #!this gon fuck some shit up, fix later
+def error(msg,errortype,erroredcmd=False): #! fix this or else
+    print(f"{errortype} Error: {msg}")
+    if erroredcmd:
+        print(f"Use <0{erroredcmd[0]}> for help!")
 
 class Branch:
     def __init__(self, ID, parentID):
@@ -106,7 +108,7 @@ tree[2].fileType="txt"
 def openFile(file):
     match types[file.fileType]:
         case "null":
-            error(cmd,"Unable to Open Null File!","Open")
+            error("Unable to Open Null File!","Open")
         case "image":
             pass
         case _:
