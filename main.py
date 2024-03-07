@@ -14,10 +14,10 @@ clipboard=None
 running=True
 with open('commands/properties', 'r') as file:types={end.split("-")[0]:end.split("-")[2].strip() for end in file.readlines()}
 
-def error(msg,errortype,erroredcmd=False): #! fix this or else
+def error(msg,errortype,errorcmd=False):
     print(f"{errortype} Error: {msg}")
-    if erroredcmd:
-        print(f"Use <0{erroredcmd[0]}> for help!")
+    if errorcmd:
+        print(f"Use <0{errorcmd[0]}> for help!")
 
 class Branch:
     def __init__(self, ID, parentID):
@@ -38,10 +38,10 @@ class Branch:
         while i:
             x=[j for j in tree.keys() if tree[j].parent in descend]
             if len(x)>1: 
-                descend=x
+                descend+=x
                 i=True
             else:i=False
-        return descend
+        return descend 
 
     def destroy(self):
         global tree
@@ -94,7 +94,6 @@ def areYouSure():
     chars=''.join(random.choice(string.ascii_letters) for i in range(3))
     return input(f"Type in the following text: [{chars.upper()}]\n:> ").lower()==chars.lower()
 
-
 #test setups            0
 location=2   #          |
 newBranch(0) #1         1
@@ -137,34 +136,34 @@ def runCommand(cmd,withinLoop):
             case "3":
                 try:
                     if len(cmd)==1:
-                        error(cmd,"No Parameters!","Parameter")
+                        error("No Parameters!","Parameter",errorcmd=cmd)
                     elif cmd[1] in ["1","u"]:
                         if location:
                             location=tree[location].parent
                             print(f"Moved to [{location}] {tree[location].name}")
                         else:
-                            error(cmd,"No Parent of Root Node!","Traversal")
+                            error("No Parent of Root Node!","Traversal")
                     elif cmd[1] in ["2","d"]:
                         try:
                             if int(cmd[2:]) in tree[location].checkChildren().keys():
                                 location=tree[location].checkChildren()[int(cmd[2:])]
                                 print(f"Moved to [{location}] {tree[location].name}")
                             else:
-                                error(cmd,f"No Child {cmd[2:]}!","Parameter")
+                                error(f"No Child {cmd[2:]}!","Parameter")
                         except:
-                            error(cmd,f"{cmd[2]} isn't a Valid Node ID!","Parameter")
+                            error(f"{cmd[2]} isn't a Valid Node ID!","Parameter")
                     elif cmd[1] in ["3","t"]:
                         try:
                             if int(cmd[2:]) in tree.keys():
                                 location=int(cmd[2:])
                                 print(f"Successfuly Moved to {tree[location].name} [{location}]!")
                         except TypeError:
-                            error(cmd,f"[{cmd[2:]}] is Not a Valid Node ID!","Parameter")
+                            error(f"[{cmd[2:]}] is Not a Valid Node ID!","Parameter")
                         except ValueError:
-                            error(cmd,"No Node ID Provided!", "Parameter")
+                            error("No Node ID Provided!", "Parameter",errorcmd=cmd)
                     else:
-                        error(cmd,"Unknown Traversal Direction!","Parameter")
-                except IndexError: error(cmd,"No Parameters Provided!","Parameter")
+                        error("Unknown Traversal Direction!","Parameter",errorcmd=cmd)
+                except IndexError: error("No Parameters Provided!","Parameter")
             case "4":
                 fileType="-".join([i.removesuffix("\n") for i in open("commands/properties","r").readlines()]).split("-")
                 fileType={fileType[i]: fileType[i+1] for i in range(0, len(fileType), 3)}
@@ -172,9 +171,9 @@ def runCommand(cmd,withinLoop):
                 print(f"Name: {tree[location].name}\nNode ID: [{tree[location].ID}]\nParent ID: [{tree[location].parent}]\nFile Type: {fileType}\nMemory Location: {id(tree[location])}\nFile Size: {len(str(tree[location].data))}")
             case "5":
                 if len(cmd)==1:
-                    error(cmd,"No Parameters!", "Parameter")
+                    error("No Parameters!", "Parameter",errorcmd=cmd)
                 elif not location:
-                    error(cmd,"Cannot Edit Properties of Root Node!","Root")
+                    error("Cannot Edit Properties of Root Node!","Root")
                 elif cmd[1]=="n":
                     tree[location].name=input("Enter File Name:\n:> ").removesuffix("\n")
                     print(f"Successfully Changed File Name to {tree[location].name}")
@@ -184,12 +183,14 @@ def runCommand(cmd,withinLoop):
                         print("Changing This File's Type to Null Will Remove All Data. Are You Sure?")
                         if not areYouSure():
                             return
+                        tree[location].data=""
+                    if toChangeTo==tree[location].fileType:
+                        error(f"Already {tree[location].fileType} File Type!","File Type")
                     tree[location].fileType=toChangeTo
-                    tree[location].data=""
                     print(f"Successfully Changed File Type to {tree[location].fileType}")
                 else:
-                    error(cmd,f"Unknown Property {cmd[1]}!","Parameter")
-            case "6": 
+                    error(f"Unknown Property {cmd[1]}!","Parameter",errorcmd=cmd)
+            case "6":
                 match cmd[1].lower():
                     case "1":
                         openFile(tree[location])
@@ -228,7 +229,7 @@ def runCommand(cmd,withinLoop):
                     else:
                         print("Deletion Cancelled!")
                 else:
-                    error(cmd,"Cannot Delete Root!","Root")
+                    error("Cannot Delete Root!","Root")
             case "9":
                 try:
                     if location and int(cmd[1:]) in tree.keys() and len(cmd)-1 and int(cmd[1:])!=location:
@@ -237,19 +238,19 @@ def runCommand(cmd,withinLoop):
                         tree[tree[location].parent].children.append(location)
                         print(f"Successfully Swapped to Parent ID [{tree[location].parent}]")
                     elif not location:
-                        error(cmd,"Cannot Change Parent of Root Node!","Root")
+                        error("Cannot Change Parent of Root Node!","Root")
                     elif int(cmd[1:])==location:
-                        error(cmd,"Cannot Change Parent to Itself!", "Parameter")
+                        error("Cannot Change Parent to Self!", "Parameter")
                     elif len(cmd)==1:
-                        error(cmd,"No Node ID Provided!","Parameter")
+                        error("No Node ID Provided!","Parameter",errorcmd=cmd)
                     else:
-                        error(cmd,f"Node ID [{int(cmd[1:])}] Doesn't Exist!","Parameter")
-                except ValueError: error(cmd,f"[{cmd[1:]}] is not a Valid Node ID!","Parameter")
+                        error(f"Node ID [{int(cmd[1:])}] Doesn't Exist!","Parameter")
+                except ValueError: error(f"[{cmd[1:]}] is not a Valid Node ID!","Parameter")
             case "a":
                 match cmd[1]:
                     case "1":
                         if len(cmd)<3:
-                            error(cmd,"Copy Type Not Provided", "Parameter")
+                            error("Copy Type Not Provided", "Parameter",errorcmd=cmd)
                         else:clipboard=tree[location].getClipboardData(cmd[2]=="2")
                     case "2":
                         if clipboard:
@@ -262,12 +263,12 @@ def runCommand(cmd,withinLoop):
                             else:
                                 paste(location,clipboard)
                         else:
-                            error(cmd,"No Clipboard Data!","Clipboard")
+                            error("No Clipboard Data!","Clipboard")
             case "b":
                 os.system('cls' if os.name=='nt' else 'clear')
             case "c":
                 if len(cmd)==1:
-                    error(cmd,"No Parameters!","Parameter")
+                    error("No Parameters!","Parameter",errorcmd=cmd)
                 else:
                     toRepeat=input(":> ")
                     if toRepeat[0].lower()!="c" and areYouSure():
@@ -275,7 +276,7 @@ def runCommand(cmd,withinLoop):
                             runCommand(toRepeat,True)
                         print(f"Completed {int(cmd[1:])} Repeats of <{toRepeat}>!")
                     elif toRepeat[0].lower()=="c":
-                        error(cmd,"Cannot Nest Repeats!","Parameter")
+                        error("Cannot Nest Repeats!","Parameter")
                     else:
                         print(f"Cancelled {int(cmd[1:])} Repeats of <{toRepeat}>!")
             case "d":
@@ -310,7 +311,7 @@ jmp 2"""
                     if int(cmd[1],16) in range(16):
                         i,j=open("commands/help","r").readlines()[int(cmd[1],16)].strip().split(",")
                         print(''.join(open("commands/help","r").readlines()[int(i):int(j)]))
-                    else: error(cmd,"Unknown Command!","Parameter")
+                    else: error("Unknown Command!","Parameter")
                 else: print(''.join(open("commands/help","r").readlines()[17:33]))
 if __name__=="__main__":
     while running:
