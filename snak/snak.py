@@ -15,7 +15,7 @@ class Snak:
 			except:pass
 	def repVar(self,check):return re.sub(r'~(.*?)~', lambda match: str(self.vars[match.group(1)]), check)
 	def runLine(self):
-		self.cache=False
+		self.cache=""
 		#//print([self.lines,self.line])
 		if self.lines[self.line].strip():
 			parts=self.lines[self.line].split(" ")
@@ -79,7 +79,10 @@ class Snak:
 testing=1
 if __name__=="__main__":
 	if testing:
-		with open("test", "r") as f:
-			runSnak(f.read())
+		with open(r"C:\Users\1PEACOCKJAM\Documents\GitHub\Mocha\snak\test.snk", "r") as f:
+			data=f.read()
+		instance=Snak(data)
+		while instance.life:
+			instance.runLine()
 	else:
 		print(~True)

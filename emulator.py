@@ -299,11 +299,9 @@ def runCommand(cmd,withinLoop):
             case "z": #? debug cmd
                 match cmd[1]:
                     case "1":
-                        tree[location].data="""var test num set 0
-var test num add ~test~ 1
-txt ~test~
-slp 100
-jmp 2""" 
+                        with open(r"C:\Users\1PEACOCKJAM\Documents\GitHub\Mocha\snak\test.snk", "r") as f:
+                            testData=f.read()
+                        tree[location].data=testData
                     case _:
                         print(clipboard)
             case _: #? Commands / Help Menu (or if the user fucks up)

@@ -1,0 +1,9 @@
+var test num set 0
+var test num add ~test~ 1
+txt ~test~
+var exitLoop bln > ~test~ 5
+jnz 8 exitLoop
+slp 100
+jmp 2
+txt Complete!
+end
